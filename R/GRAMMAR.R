@@ -30,6 +30,8 @@ library(vegan)
 #' @param num.parallel Number of parallel processes or a predefined socket cluster
 #' 
 #' @return p-value and f-value
+#' 
+#' @importFrom 'vegan::' code before vegan
 #' @examples 
 #'    X = as.matrix(fread("SNP_rightdim.txt"))
 #'    K = Kinship(t(X))
@@ -44,6 +46,28 @@ library(vegan)
 #'    # ps[2] = f-value
 #' @export
 run_gamma<- function(Y, X, max_itr = 4, num.parallel = 2) {
+  
+  getp <- function(Y, x, p, num.parallel = 2) {
+    res = vegan::adonis(Y ~ x, perm = p, parallel = num.parallel)
+    return(res$aov.tab$"Pr(>F)"[1])
+  }
+  getF <- function(Y, x, p, num.parallel = 2) {
+    res = vegan::adonis(Y ~ x, perm = p, parallel = num.parallel)
+    return(res$aov.tab$F.Model[1])
+  }
+
+  gamma <- function(Y, x, max_itr = 4, num.parallel = 2) {
+    for (i in 2:max_itr) {
+      p = 10^i
+      limit = 5/p
+      pval = getp(Y, x, p, num.parallel)
+      if (pval > limit) {
+        break
+      }
+    }
+    return(pval)
+  }
+  
   Ng = dim(X)[2]
   pval = 1:Ng
   fval = 1:Ng
@@ -57,35 +81,6 @@ run_gamma<- function(Y, X, max_itr = 4, num.parallel = 2) {
   write.table(pval, "P1.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
   write.table(fval, "F1.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
 }
-getp <- function(Y, x, p, num.parallel = 2) {
-  res = adonis(Y ~ x, perm = p, parallel = num.parallel)
-  return(res$aov.tab$"Pr(>F)"[1])
-}
-getF <- function(Y, x, p, num.parallel = 2) {
-  res = adonis(Y ~ x, perm = p, parallel = num.parallel)
-  return(res$aov.tab$F.Model[1])
-}
-gamma <- function(Y, x, max_itr = 4, num.parallel = 2) {
-  for (i in 2:max_itr) {
-    p = 10^i
-    limit = 5/p
-    pval = getp(Y, x, p, num.parallel)
-    if (pval > limit) {
-      break
-    }
-  }
-  return(pval)
-}
-chol_solve <- function(K) {
-  a = eigen(K)$vectors
-  b = eigen(K)$values
-  b[b<1e-13] = 1e-13
-  b = 1/sqrt(b)
-  return(a%*%diag(b)%*%t(a))
-}
-rotate <- function(Y, sigma) {
-  U <- chol_solve(sigma)
-  tU <-t(U)
-  UY = tU%*%Y
-  return(UY)
-}
+
+
+
