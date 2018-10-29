@@ -35,7 +35,9 @@
 #' 
 #' @return Variance components Vg: genetic factor Ve: environment factor
 #' 
-#' @importFrom 'lmmlite::' code before lmmlite
+#' @importFrom 'lmmlite::' code before eigen_rotation
+#' @importFrom 'lmmlite::' code before fitLMM
+#' @importFrom 'progress::' code before progress_bar
 #' 
 #' @examples 
 #'    X = as.matrix(fread("SNP_rightdim.txt"))

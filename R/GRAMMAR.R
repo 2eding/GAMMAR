@@ -31,7 +31,7 @@
 #' 
 #' @return p-value and f-value
 #' 
-#' @importFrom 'vegan::' code before vegan
+#' @importFrom 'vegan::' code before adonis
 #' @examples 
 #'    X = as.matrix(fread("SNP_rightdim.txt"))
 #'    K = Kinship(t(X))
