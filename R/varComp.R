@@ -18,12 +18,12 @@ if("progress" %in% rownames(installed.packages()) == FALSE){
   install.packages("progress")
 }
 
-library(devtools)
-library(data.table)
-library(lmmlite)
-library(RcppEigen)
-library(Rcpp)
-library(progress)
+library(devtools);
+library(data.table);
+library(lmmlite);
+library(RcppEigen);
+library(Rcpp);
+library(progress);
 #' varComp
 #'
 #' varComp function will estimate variance components
