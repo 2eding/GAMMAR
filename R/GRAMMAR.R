@@ -67,10 +67,10 @@ run_gamma<- function(Y, X, max_itr = 4, num.parallel = 2) {
     pval[i] = gamma(newY, X[,i], max_itr, num.parallel)
     fval[i] = getF(newY,X[,i],1, num.parallel)
     cat(i,". f=",fval[i]," p=",pval[i],"\n")
-  }
-  return(list(pval, fval))
+  } 
   write.table(pval, "P1.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
   write.table(fval, "F1.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
+  return(list(pval, fval))
 }
 
 
