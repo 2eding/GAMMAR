@@ -38,6 +38,7 @@
 #' @importFrom 'lmmlite::' code before eigen_rotation
 #' @importFrom 'lmmlite::' code before fitLMM
 #' @importFrom 'progress::' code before progress_bar
+#' @importFrom 'data.table::' code before fread
 #' 
 #' @examples 
 #'    X = as.matrix(fread("SNP_rightdim.txt"))
@@ -57,8 +58,8 @@ varComp <- function(K, Y, X){
       write.table(VC$sigmasq_g, "sigmasq_g1.txt", row.names = F, col.names = F, append = T, quote = F, sep="\n")
       write.table(VC$sigmasq_e, "sigmasq_e1.txt", row.names = F, col.names = F, append = T, quote = F, sep="\n")
     }
-    Vg = median(as.matrix(fread("sigmasq_g1.txt")))
-    Ve = median(as.matrix(fread("sigmasq_e1.txt")))
+    Vg = median(as.matrix(data.table::fread("sigmasq_g1.txt")))
+    Ve = median(as.matrix(data.table::fread("sigmasq_e1.txt")))
     # file.remove("sigmasq_g1.txt")
     # file.remove("sigmasq_e1.txt")
     list(Vg, Ve)
