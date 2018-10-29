@@ -40,8 +40,7 @@ varComp <- function(K, Y, X){
   }
   Vg = median(as.matrix(data.table::fread("Vg_temp.txt")))
   Ve = median(as.matrix(data.table::fread("Ve_temp.txt")))
-  list(Vg, Ve)
-  
+
   chol_solve <- function(K) {
     a = eigen(K)$vectors
     b = eigen(K)$values
@@ -65,4 +64,5 @@ varComp <- function(K, Y, X){
   sigma = Vg*K + Ve*I
   UY = rotate(Y, sigma)
   UX = rotate(X, sigma)
+  return(list(Vg, Ve))
 }
