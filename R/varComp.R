@@ -64,5 +64,6 @@ varComp <- function(K, Y, X){
   sigma = Vg*K + Ve*I
   UY = rotate(Y, sigma)
   UX = rotate(X, sigma)
+  
   return(list(Vg, Ve))
 }
