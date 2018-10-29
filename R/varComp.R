@@ -56,7 +56,7 @@ varComp <- function(K, Y, X){
     Ve = median(as.matrix(fread("sigmasq_e1.txt")))
     file.remove("sigmasq_g1.txt")
     file.remove("sigmasq_e1.txt")
-    return(list(Vg, Ve))
+    list(Vg, Ve)
   }
   Sys.sleep(1/100)
   pvc$terminate()
