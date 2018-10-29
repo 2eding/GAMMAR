@@ -6,7 +6,8 @@
 #' @param Y is the phenotype matrix, individual x phenotype
 #' @param X is the SNP matrix, individual x snp
 #' 
-#' @return Variance components Vg: genetic factor Ve: environment factor
+#' @return Variance components Vg: genetic factor(VC[1]) Ve: environment factor(VC[2])
+#' @return UY: rotate(Y, sigma)(VC[3]) UX: rotate(X, sigma)(VC[4])
 #' 
 #' @importFrom 'lmmlite::' code before eigen_rotation
 #' @importFrom 'lmmlite::' code before fitLMM
@@ -65,5 +66,5 @@ varComp <- function(K, Y, X){
   UY = rotate(Y, sigma)
   UX = rotate(X, sigma)
   
-  return(list(Vg, Ve))
+  return(list(Vg, Ve, UY, UX))
 }

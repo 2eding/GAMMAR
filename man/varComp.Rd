@@ -14,7 +14,9 @@ varComp(K, Y, X)
 \item{X}{is the SNP matrix, individual x snp}
 }
 \value{
-Variance components Vg: genetic factor Ve: environment factor
+Variance components Vg: genetic factor(VC[1]) Ve: environment factor(VC[2])
+
+UY: rotate(Y, sigma)(VC[3]) UX: rotate(X, sigma)(VC[4])
 }
 \description{
 varComp function will estimate variance components

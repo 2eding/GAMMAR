@@ -4,12 +4,12 @@
 \alias{run_gamma}
 \title{Generalized Renown Analysis of Molecular variance for Mixed model Analysis R package}
 \usage{
-run_gamma(Y, X, max_itr = 4, num.parallel = 2)
+run_gamma(UY, UX, max_itr = 4, num.parallel = 2)
 }
 \arguments{
-\item{Y}{is the phenotype matrix, individual x phenotype}
+\item{UY}{is obtained from the varComp function}
 
-\item{X}{is the SNP matrix, individual x snp}
+\item{UX}{is obtained from the varComp function}
 
 \item{num.parallel}{Number of parallel processes or a predefined socket cluster}
 

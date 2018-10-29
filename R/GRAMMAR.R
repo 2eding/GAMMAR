@@ -15,8 +15,8 @@
 #' run_gamma function calculates p-value and f-value.
 #' 
 #' @param K is obtained from the Kinship function
-#' @param Y is the phenotype matrix, individual x phenotype
-#' @param X is the SNP matrix, individual x snp
+#' @param UY is obtained from the varComp function
+#' @param UX is obtained from the varComp function
 #' @param mat_itr is specifies the number of permutations.
 #' @param num.parallel Number of parallel processes or a predefined socket cluster
 #' 
@@ -36,7 +36,7 @@
 #'    # ps[1] = p-value
 #'    # ps[2] = f-value
 #' @export
-run_gamma<- function(Y, X, max_itr = 4, num.parallel = 2) {
+run_gamma<- function(UY, UX, max_itr = 4, num.parallel = 2) {
   
   getp <- function(Y, x, p, num.parallel = 2) {
     res = vegan::adonis(Y ~ x, perm = p, parallel = num.parallel)
@@ -68,8 +68,8 @@ run_gamma<- function(Y, X, max_itr = 4, num.parallel = 2) {
     fval[i] = getF(newY,X[,i],1, num.parallel)
     cat(i,". f=",fval[i]," p=",pval[i],"\n")
   } 
-  write.table(pval, "P1.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
-  write.table(fval, "F1.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
+  write.table(pval, "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
+  write.table(fval, "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
   return(list(pval, fval))
 }
 
