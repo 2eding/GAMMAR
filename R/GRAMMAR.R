@@ -1,11 +1,11 @@
-if("mvtnorm" %in% rownames(installed.packages()) == FALSE) {
-  install.packages("mvtnorm")
-}
-if("vegan" %in% rownames(installed.packages()) == FALSE) {
-  install.packages("vegan")
-}
-library(mvtnorm)
-library(vegan)
+# if("mvtnorm" %in% rownames(installed.packages()) == FALSE) {
+#   install.packages("mvtnorm")
+# }
+# if("vegan" %in% rownames(installed.packages()) == FALSE) {
+#   install.packages("vegan")
+# }
+# library(mvtnorm)
+# library(vegan)
 
 #######################################################################################################################
 #######################################################################################################################
