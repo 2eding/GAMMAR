@@ -39,8 +39,8 @@ varComp <- function(K, Y, X){
     file.remove("sigmasq_g1.txt")
     file.remove("sigmasq_e1.txt")
   }
-  Vg = median(as.matrix(data.table::fread("Vg_temp.txt")))
-  Ve = median(as.matrix(data.table::fread("Ve_temp.txt")))
+  Vg = median(data.table::fread("Vg_temp.txt"))
+  Ve = median(data.table::fread("Ve_temp.txt"))
 
   chol_solve <- function(K) {
     a = eigen(K)$vectors
@@ -58,6 +58,7 @@ varComp <- function(K, Y, X){
   
   Sys.sleep(1/100)
   pvc$terminate()
+  
   snpNum <- dim(X)[2]
   indiNum <- dim(X)[1]
   geneNum <- dim(Y)[2]
