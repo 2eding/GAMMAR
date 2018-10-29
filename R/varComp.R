@@ -1,30 +1,3 @@
-# 
-# if("devtools" %in% rownames(installed.packages()) == FALSE) {
-#   install.packages("devtools")
-# }
-# if("data.table" %in% rownames(installed.packages()) == FALSE) {
-#   install.packages("data.table")
-# }
-# if("lmmlite" %in% rownames(installed.packages()) == FALSE){
-#   install_github("kbroman/lmmlite")
-# }
-# if("RcppEigen" %in% rownames(installed.packages()) == FALSE){
-#   install.packages("RcppEigen")
-# }
-# if("Rcpp" %in% rownames(installed.packages()) == FALSE){
-#   install.packages("Rcpp")
-# }
-# if("progress" %in% rownames(installed.packages()) == FALSE){
-#   install.packages("progress")
-# }
-# 
-# library(devtools);
-# library(data.table);
-# library(lmmlite);
-# library(RcppEigen);
-# library(Rcpp);
-# library(progress);
-
 #' varComp
 #'
 #' varComp function will estimate variance components
@@ -58,12 +31,16 @@ varComp <- function(K, Y, X){
       write.table(VC$sigmasq_g, "sigmasq_g1.txt", row.names = F, col.names = F, append = T, quote = F, sep="\n")
       write.table(VC$sigmasq_e, "sigmasq_e1.txt", row.names = F, col.names = F, append = T, quote = F, sep="\n")
     }
-    Vg = median(as.matrix(data.table::fread("sigmasq_g1.txt")))
-    Ve = median(as.matrix(data.table::fread("sigmasq_e1.txt")))
-    # file.remove("sigmasq_g1.txt")
-    # file.remove("sigmasq_e1.txt")
-    list(Vg, Ve)
+    Vg_temp = median(as.matrix(data.table::fread("sigmasq_g1.txt")))
+    Ve_temp = median(as.matrix(data.table::fread("sigmasq_e1.txt")))
+    write.table(Vg_temp, "Vg_temp.txt", row.names = F, col.names = F, quote = F, append = T, sep="\n")
+    write.table(Ve_temp, "Ve_temp.txt", row.names = F, col.names = F, quote = F, append = T, sep="\n")
+    file.remove("sigmasq_g1.txt")
+    file.remove("sigmasq_e1.txt")
   }
+  Vg = median(as.matrix(data.table::fread("Vg_temp.txt")))
+  Ve = median(as.matrix(data.table::fread("Ve_temp.txt")))
+  list(Vg, Ve)
   
   chol_solve <- function(K) {
     a = eigen(K)$vectors

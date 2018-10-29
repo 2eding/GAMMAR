@@ -1,12 +1,3 @@
-# if("mvtnorm" %in% rownames(installed.packages()) == FALSE) {
-#   install.packages("mvtnorm")
-# }
-# if("vegan" %in% rownames(installed.packages()) == FALSE) {
-#   install.packages("vegan")
-# }
-# library(mvtnorm)
-# library(vegan)
-
 #######################################################################################################################
 #######################################################################################################################
 #################################### To use RpackGAMMA, need to R version >= 3.5.0 ####################################
