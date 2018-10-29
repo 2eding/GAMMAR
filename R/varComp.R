@@ -46,7 +46,7 @@
 
 
 varComp <- function(K, Y, X){
-  pvc = progress_bar$new(format=" [:bar] :percent", total = dim(Y)[2]*dim(X)[2])
+  pvc = progress::progress_bar$new(format=" [:bar] :percent", total = dim(Y)[2]*dim(X)[2])
   for(i in 1:dim(Y)[2]) {
     for(j in 1:dim(X)[2]){
       e = lmmlite::eigen_rotation(K, t(Y)[i,], X[,j], use_cpp = T)
