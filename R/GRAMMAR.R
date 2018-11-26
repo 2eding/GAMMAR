@@ -12,7 +12,7 @@
 
 #' Generalized Renown Analysis of Molecular variance for Mixed model Analysis R package
 #' 
-#' run_gamma function calculates p-value and f-value.
+#' run_grammar function calculates p-value and f-value.
 #' 
 #' @param K is obtained from the Kinship function
 #' @param UY is obtained from the varComp function
