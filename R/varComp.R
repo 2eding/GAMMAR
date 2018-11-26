@@ -70,8 +70,8 @@ varComp <- function(K, Y, X){
     )
   }
   
-  Vg = median(as.matrix(fread("Vg.txt")))
-  Ve = median(as.matrix(fread("Ve.txt")))
+  Vg = median(as.matrix(data.table::fread("Vg.txt")))
+  Ve = median(as.matrix(data.table::fread("Ve.txt")))
   
   chol_solve <- function(K) {
     a = eigen(K)$vectors
