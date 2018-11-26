@@ -3,6 +3,8 @@ Generalized Renown Analysis of Molecular variance for Mixed model Analysis R pac
 
 # usage
 library(data.table)
+library(devtools)
+install_github("2eding/GRAMMAR")
 
 X = as.matrix(fread("X_rightdim.txt"))
 Y = as.matrix(fread("Y_rightdim.txt"))
