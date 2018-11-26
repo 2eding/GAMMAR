@@ -7,8 +7,8 @@
 #' @param X is the SNP matrix, individual x snp
 #' 
 #' @return Variance components Vg: genetic factor(VC[1]) Ve: environment factor(VC[2])
-#' @return UY t(eigen(K)$vectors %*% diag(1/sqrt(eigen(K)$values)) %*% t(eigen(K)$vectors)) %*% Y
-#' @return UX t(eigen(K)$vectors %*% diag(1/sqrt(eigen(K)$values)) %*% t(eigen(K)$vectors)) %*% X
+#' @return UY is the third output value of the varComp function.
+#' @return UX is the fourth output value of the varComp function.
 #' 
 #' @importFrom 'lmmlite::' code before eigen_rotation
 #' @importFrom 'lmmlite::' code before fitLMM

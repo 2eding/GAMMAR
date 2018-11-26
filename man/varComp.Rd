@@ -16,9 +16,9 @@ varComp(K, Y, X)
 \value{
 Variance components Vg: genetic factor(VC[1]) Ve: environment factor(VC[2])
 
-UY t(eigen(K)$vectors %*% diag(1/sqrt(eigen(K)$values)) %*% t(eigen(K)$vectors)) %*% Y
+UY is the third output value of the varComp function.
 
-UX t(eigen(K)$vectors %*% diag(1/sqrt(eigen(K)$values)) %*% t(eigen(K)$vectors)) %*% X
+UX is the fourth output value of the varComp function.
 }
 \description{
 varComp function will estimate variance components
