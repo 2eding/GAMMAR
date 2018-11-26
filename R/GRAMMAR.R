@@ -30,24 +30,24 @@
 #'    Y = as.matrix(fread("Phenotype_rightdim.txt"))
 #'    VC = varComp(K, Y, X)
 #'    
-#'    ps = run_gamma(Y, X, max_itr = 4, num.parallel = 2)
+#'    ps = run_gamma(UY, UX, max_itr = 4, num.parallel = 2)
 #'    # The default value for num.parallel is 2
 #'    
 #'    # ps[1] = p-value
 #'    # ps[2] = f-value
 #' @export
-run_gamma<- function(UY, UX, max_itr = 4, num.parallel = 2) {
-  
-  getp <- function(Y, x, p, num.parallel = 2) {
+run_gamma<- function(UY, UX, max_itr, num.parallel) {
+  ptm <- proc.time()
+  getp <- function(Y, x, p, num.parallel) {
     res = vegan::adonis(Y ~ x, perm = p, parallel = num.parallel)
     return(res$aov.tab$"Pr(>F)"[1])
   }
-  getF <- function(Y, x, p, num.parallel = 2) {
+  getF <- function(Y, x, p, num.parallel) {
     res = vegan::adonis(Y ~ x, perm = p, parallel = num.parallel)
     return(res$aov.tab$F.Model[1])
   }
 
-  gamma <- function(Y, x, max_itr = 4, num.parallel = 2) {
+  gamma <- function(Y, x, max_itr = 4, num.parallel) {
     for (i in 2:max_itr) {
       p = 10^i
       limit = 5/p
@@ -58,20 +58,22 @@ run_gamma<- function(UY, UX, max_itr = 4, num.parallel = 2) {
     }
     return(pval)
   }
-  
-  Ng = dim(X)[2]
+
+  Ng = dim(UX)[2]
   pval = 1:Ng
   fval = 1:Ng
-  newY = Y-min(Y)
+  newY = UY-min(UY)
+  
   for (i in 1:Ng) {
-    pval[i] = gamma(newY, X[,i], max_itr, num.parallel)
-    fval[i] = getF(newY,X[,i],1, num.parallel)
+    pval[i] = gamma(newY, UX[,i], max_itr, num.parallel)
+    fval[i] = getF(newY, UX[,i], 1, num.parallel)
     cat(i,". f=",fval[i]," p=",pval[i],"\n")
   } 
+  
+  proc.time() - ptm
+  
   write.table(pval, "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
   write.table(fval, "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
-  return(list(pval, fval))
+  
+  return(list("P" = pval, "F" = fval))
 }
-
-
-

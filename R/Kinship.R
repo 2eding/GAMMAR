@@ -10,6 +10,9 @@
 #' @export
 
 Kinship <- function(X){
-  X_norm = ((X - mean(X, na.rm = T)) / sd(X, na.rm = T))
-  return (cor(X_norm))
+  ptm <- proc.time()
+  X_norm = (X - mean(X, na.rm = T) / sd(X, na.rm = T)) # normalize
+  kin = cor(X_norm)
+  print(proc.time() - ptm)
+  return (kin)
 }
