@@ -26,7 +26,7 @@ varComp <- function(K, Y, X){
   snpNum <- dim(X)[2]
   indiNum <- dim(X)[1]
   geneNum <- dim(Y)[2]
-  X0 = array(1, c(indiNum, geneNum))
+  X0 = array(1, c(1, geneNum))
   X0_origin = X0
   K_origin = K
   
