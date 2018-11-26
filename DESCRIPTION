@@ -6,7 +6,7 @@ Date: 2018-11-26
 Authors@R: c(person("GIJU", "LEE", role = c("aut", "cre"),
                     email = "2eding@dongguk.edu"))
 Description: This package is the R package version of GAMMA. if you want more info. please visit compbiojoo.com
-License: GPL 3.0
+License: GPL-3.0
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0

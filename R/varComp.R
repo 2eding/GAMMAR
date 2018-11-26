@@ -23,21 +23,17 @@
 
 
 varComp <- function(K, Y, X){
+  ptm <- proc.time()
   snpNum <- dim(X)[2]
   indiNum <- dim(X)[1]
   geneNum <- dim(Y)[2]
-  X0 = array(1, c(1, geneNum))
-  X0_origin = X0
   K_origin = K
   
   for (i in 1:dim(Y)[2]) {
-    ptm <- proc.time()
-    pvc = progress::progress_bar$new(format = " [:bar] :percent", total = geneNum)
-    
-    X0 = X0_origin
     K = K_origin
+    print(i)
     
-    e = lmmlite::eigen_rotation(K, t(Y)[i,], X0, use_cpp = T)
+    e = lmmlite::eigen_rotation(K, t(Y)[i,], use_cpp = T)
     VC = lmmlite::fitLMM(
       e$Kva,
       e$y,
@@ -47,7 +43,6 @@ varComp <- function(K, Y, X){
       tol = 1e-6,
       check_boundary = T
     )
-    pvc$tick()
     
     write.table(
       VC$sigmasq_g,
@@ -90,9 +85,6 @@ varComp <- function(K, Y, X){
   sigma = Vg * K + Ve * I
   UY = rotate(Y, sigma)		# Rotate genotypes and phenotypes
   UX = rotate(X, sigma)
-  
-  Sys.sleep(1 / 100)
-  pvc$terminate()
   
   print(proc.time() - ptm)
   return(list(
