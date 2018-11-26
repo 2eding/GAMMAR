@@ -13,7 +13,6 @@
 #' @importFrom 'lmmlite::' code before eigen_rotation
 #' @importFrom 'lmmlite::' code before fitLMM
 #' @importFrom 'progress::' code before progress_bar
-#' @importFrom 'data.table::' code before fread
 #' 
 #' @examples 
 #'    X = as.matrix(fread("X_rightdim.txt"))
@@ -70,8 +69,8 @@ varComp <- function(K, Y, X){
     )
   }
   
-  Vg = median(as.matrix(data.table::fread("Vg.txt")))
-  Ve = median(as.matrix(data.table::fread("Ve.txt")))
+  Vg = median(as.matrix(read.table("Vg.txt")))
+  Ve = median(as.matrix(read.table("Ve.txt")))
   
   chol_solve <- function(K) {
     a = eigen(K)$vectors
