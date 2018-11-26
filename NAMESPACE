@@ -2,7 +2,7 @@
 
 export(Kinship)
 export(gcfunc)
-export(run_gamma)
+export(run_grammar)
 export(varComp)
 importFrom('data.table::',before)
 importFrom('data.table::',code)

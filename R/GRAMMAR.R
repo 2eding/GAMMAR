@@ -30,12 +30,12 @@
 #'    Y = as.matrix(fread("Phenotype_rightdim.txt"))
 #'    VC = varComp(K, Y, X)
 #'    
-#'    ps = run_gamma(VC[3], VC[4], max_itr = 4, num.parallel = 2)
+#'    ps = run_grammar(VC[3], VC[4], max_itr = 4, num.parallel = 2)
 #'    
 #'    # ps[1] = p-value
 #'    # ps[2] = f-value
 #' @export
-run_gamma<- function(UY, UX, max_itr, num.parallel) {
+run_grammar<- function(UY, UX, max_itr, num.parallel) {
   ptm <- proc.time()
   getp <- function(Y, x, p, num.parallel) {
     res = vegan::adonis(Y ~ x, perm = p, parallel = num.parallel)
