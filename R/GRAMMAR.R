@@ -37,12 +37,15 @@
 #' @export
 run_grammar<- function(UY, UX, max_itr, num.parallel) {
   ptm <- proc.time()
+  cl <- parallel::makeForkCluster(nnodes = num.parallel)
+  setDefaultCluster(cl)
+  
   getp <- function(Y, x, p, num.parallel) {
-    res = vegan::adonis(Y ~ x, perm = p, parallel = num.parallel)
+    res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores",cl))
     return(res$aov.tab$"Pr(>F)"[1])
   }
   getF <- function(Y, x, p, num.parallel) {
-    res = vegan::adonis(Y ~ x, perm = p, parallel = num.parallel)
+    res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores",cl))
     return(res$aov.tab$F.Model[1])
   }
 
@@ -68,8 +71,8 @@ run_grammar<- function(UY, UX, max_itr, num.parallel) {
     fval[i] = getF(newY, UX[,i], 1, num.parallel)
     cat(i,". f=",fval[i]," p=",pval[i],"\n")
   } 
-  
-  proc.time() - ptm
+  stopCluster(cl)
+  print(proc.time() - ptm)
   
   write.table(pval, "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
   write.table(fval, "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)

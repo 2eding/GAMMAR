@@ -46,7 +46,7 @@ varComp <- function(K, Y, X){
     
     write.table(
       VC$sigmasq_g,
-      "Vg.txt",
+      "Vg_temp.txt",
       row.names = F,
       col.names = F,
       append = T,
@@ -55,7 +55,7 @@ varComp <- function(K, Y, X){
     )
     write.table(
       VC$sigmasq_e,
-      "Ve.txt",
+      "Ve_temp.txt",
       row.names = F,
       col.names = F,
       append = T,
@@ -64,8 +64,12 @@ varComp <- function(K, Y, X){
     )
   }
   
-  Vg = median(as.matrix(read.table("Vg.txt")))
-  Ve = median(as.matrix(read.table("Ve.txt")))
+  VCbind = rbind("Vg.txt", "Ve.txt")
+  file.remove("Vg.txt")
+  file.remove("Ve.txt")
+  write.table(VCbind, "VC.txt", row.names = F, col.names = F, quote = F)
+  Vg = median(VCbind[1])
+  Ve = median(VCbind[2])
   
   chol_solve <- function(K) {
     a = eigen(K)$vectors
