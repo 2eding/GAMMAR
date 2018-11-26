@@ -4,7 +4,7 @@
 \alias{run_gamma}
 \title{Generalized Renown Analysis of Molecular variance for Mixed model Analysis R package}
 \usage{
-run_gamma(UY, UX, max_itr = 4, num.parallel = 2)
+run_gamma(UY, UX, max_itr, num.parallel)
 }
 \arguments{
 \item{UY}{is obtained from the varComp function}
@@ -30,8 +30,7 @@ run_gamma function calculates p-value and f-value.
    Y = as.matrix(fread("Phenotype_rightdim.txt"))
    VC = varComp(K, Y, X)
    
-   ps = run_gamma(Y, X, max_itr = 4, num.parallel = 2)
-   # The default value for num.parallel is 2
+   ps = run_gamma(VC[3], VC[4], max_itr = 4, num.parallel = 2)
    
    # ps[1] = p-value
    # ps[2] = f-value

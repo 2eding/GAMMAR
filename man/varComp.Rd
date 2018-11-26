@@ -16,14 +16,16 @@ varComp(K, Y, X)
 \value{
 Variance components Vg: genetic factor(VC[1]) Ve: environment factor(VC[2])
 
-UY: rotate(Y, sigma)(VC[3]) UX: rotate(X, sigma)(VC[4])
+UY t(eigen(K)$vectors %*% diag(1/sqrt(eigen(K)$values)) %*% t(eigen(K)$vectors)) %*% Y
+
+UX t(eigen(K)$vectors %*% diag(1/sqrt(eigen(K)$values)) %*% t(eigen(K)$vectors)) %*% X
 }
 \description{
 varComp function will estimate variance components
 }
 \examples{
-   X = as.matrix(fread("SNP_rightdim.txt"))
+   X = as.matrix(fread("X_rightdim.txt"))
    K = Kinship(t(X))
-   Y = as.matrix(fread("Phenotype_rightdim.txt"))
+   Y = as.matrix(fread("Y_rightdim.txt"))
    VC = varComp(K, Y, X)
 }
