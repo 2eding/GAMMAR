@@ -38,7 +38,7 @@
 run_grammar<- function(UY, UX, max_itr, num.parallel) {
   ptm <- proc.time()
   cl <- parallel::makeForkCluster(nnodes = num.parallel)
-  setDefaultCluster(cl)
+  parallel::setDefaultCluster(cl)
   
   getp <- function(Y, x, p, num.parallel) {
     res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores",cl))
@@ -71,7 +71,7 @@ run_grammar<- function(UY, UX, max_itr, num.parallel) {
     fval[i] = getF(newY, UX[,i], 1, num.parallel)
     cat(i,". f=",fval[i]," p=",pval[i],"\n")
   } 
-  stopCluster(cl)
+  parallel::stopCluster(cl)
   print(proc.time() - ptm)
   
   write.table(pval, "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
