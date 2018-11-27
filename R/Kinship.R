@@ -13,6 +13,7 @@ Kinship <- function(X){
   ptm <- proc.time()
   X_norm = (X - mean(X, na.rm = T) / sd(X, na.rm = T)) # normalize
   kin = cor(X_norm)
+  write.table(kin, "K.txt", row.names = F, col.names = F, quote = F)
   print(proc.time() - ptm)
   return (kin)
 }
