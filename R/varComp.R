@@ -64,12 +64,13 @@ varComp <- function(K, Y, X){
     )
   }
   
-  VCbind = rbind("Vg_temp.txt", "Ve_temp.txt")
+  VCbind = cbind(vg=as.matrix(read.table("Vg_temp.txt")), ve=as.matrix(read.table("Ve_temp.txt")))
   file.remove("Vg_temp.txt")
   file.remove("Ve_temp.txt")
   write.table(VCbind, "VC.txt", row.names = F, col.names = F, quote = F)
-  Vg = median(VCbind[1])
-  Ve = median(VCbind[2])
+  vc = as.matrix(read.table("VC.txt"))
+  Vg = median(vc[,1])
+  Ve = median(vc[,2])
   
   chol_solve <- function(K) {
     a = eigen(K)$vectors
@@ -87,8 +88,8 @@ varComp <- function(K, Y, X){
   
   I = diag(indiNum)
   sigma = Vg * K + Ve * I
-  UY = rotate(t(Y), sigma)		# Rotate genotypes and phenotypes
-  UX = rotate(t(X), sigma)
+  UY = rotate(Y, sigma)		# Rotate genotypes and phenotypes
+  UX = rotate(X, sigma)
   
   print(proc.time() - ptm)
   return(list(
