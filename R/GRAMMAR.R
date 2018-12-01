@@ -36,7 +36,7 @@
 #'    # ps[1] = p-value
 #'    # ps[2] = f-value
 #' @export
-run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
+run_grammar<- function(K, Y, X, Vg, Ve, max_itr, num.parallel) {
   ptm <- proc.time()
   cl <- parallel::makeCluster(num.parallel)
   parallel::setDefaultCluster(cl)
@@ -96,8 +96,8 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
   indiNum <- dim(X)[1]
   geneNum <- dim(Y)[2]
   
-  Vg = median(VC[,1])		# Variance components
-  Ve = median(VC[,2])
+  # Vg = median(VC$Vg)		# Variance components
+  # Ve = median(VC$Ve)
   
   I = diag(indiNum)
   sigma = Vg*K + Ve*I
