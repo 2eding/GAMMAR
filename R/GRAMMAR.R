@@ -113,5 +113,5 @@ run_grammar<- function(K, Y, X, Vg, Ve, max_itr, num.parallel) {
   write.table(pf$f, "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
   
   print(proc.time() - ptm)
-  return(list("P" = pval, "F" = fval))
+  return(list("P" = pf$p, "F" = pf$f))
 }
