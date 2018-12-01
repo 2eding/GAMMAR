@@ -17,7 +17,8 @@
 #' @param K is obtained from the Kinship function
 #' @param Y is the phenotype matrix, individual x phenotype
 #' @param X is the SNP matrix, individual x snp
-#' @param VC is obtained from the varComp function
+#' @param Vg is obtained from the varComp function => VC$Vg
+#' @param Ve is obtained from the varComp function => VC$Ve
 #' @param mat_itr is specifies the number of permutations.
 #' @param num.parallel Number of parallel processes or a predefined socket cluster
 #' 
