@@ -15,8 +15,9 @@
 #' run_grammar function calculates p-value and f-value.
 #' 
 #' @param K is obtained from the Kinship function
-#' @param UY is obtained from the varComp function
-#' @param UX is obtained from the varComp function
+#' @param Y is the phenotype matrix, individual x phenotype
+#' @param X is the SNP matrix, individual x snp
+#' @param VC is obtained from the varComp function
 #' @param mat_itr is specifies the number of permutations.
 #' @param num.parallel Number of parallel processes or a predefined socket cluster
 #' 
@@ -35,8 +36,10 @@
 #'    # ps[1] = p-value
 #'    # ps[2] = f-value
 #' @export
-run_grammar<- function(UY, UX, max_itr, num.parallel) {
+run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
   ptm <- proc.time()
+  cl <- parallel::makeCluster(num.parallel)
+  parallel::setDefaultCluster(cl)
   
   getp <- function(Y, x, p, num.parallel) {
     res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores",cl))
@@ -59,23 +62,55 @@ run_grammar<- function(UY, UX, max_itr, num.parallel) {
     return(pval)
   }
 
-  Ng = dim(UX)[2]
-  pval = 1:Ng
-  fval = 1:Ng
-  newY = UY-min(UY)
+  run_gamma <- function(Y, X) {
+    Ng = dim(X)[2]
+    pval = 1:Ng
+    fval = 1:Ng
+    newY = Y - min(Y)
+    
+    for (i in 1:Ng) {
+      doParallel::registerDoParallel(cl, cores = num.parallel)
+      pval[i] = gamma(newY, X[, i], max_itr, cl)
+      fval[i] = getF(newY, X[, i], 1, cl)
+      cat(i, ". f =", fval[i], " p =", pval[i], "\n")
+    }
+    return(list("p" = pval, "f" = fval))
+  }
   
-  for (i in 1:Ng) {
-    cl <- parallel::makeCluster(num.parallel)
-    parallel::setDefaultCluster(cl)
-    pval[i] = gamma(newY, UX[,i], max_itr, cl)
-    fval[i] = getF(newY, UX[,i], 1, cl)
-    cat(i,". f=",fval[i]," p=",pval[i],"\n")
-  } 
+  chol_solve <- function(K) {
+    a = eigen(K)$vectors
+    b = eigen(K)$values
+    b[b < 1e-13] = 1e-13
+    b = 1 / sqrt(b)
+    return(a %*% diag(b) %*% t(a))
+  }
+  
+  rotate <- function(Y, sigma) {
+    U <- chol_solve(sigma)
+    tU <- t(U)
+    UY = tU %*% Y
+    return(UY)
+  }
+  
+  snpNum <- dim(X)[2]
+  indiNum <- dim(X)[1]
+  geneNum <- dim(Y)[2]
+  
+  Vg = median(VC[,1])		# Variance components
+  Ve = median(VC[,2])
+  
+  I = diag(indiNum)
+  sigma = Vg*K + Ve*I
+  
+  UY = rotate(Y,sigma)		# Rotate genotypes and phenotypes
+  UX = rotate(X,sigma)
+  
+  pf = run_gamma(UY, UX)
   parallel::stopCluster(cl)
+  
+  write.table(pf$p, "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
+  write.table(pf$f, "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
+  
   print(proc.time() - ptm)
-  
-  write.table(pval, "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
-  write.table(fval, "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
-  
   return(list("P" = pval, "F" = fval))
 }

@@ -7,12 +7,9 @@
 #' @param X is the SNP matrix, individual x snp
 #' 
 #' @return Variance components Vg: genetic factor(VC[1]) Ve: environment factor(VC[2])
-#' @return UY is the third output value of the varComp function.
-#' @return UX is the fourth output value of the varComp function.
 #' 
 #' @importFrom 'lmmlite::' code before eigen_rotation
 #' @importFrom 'lmmlite::' code before fitLMM
-#' @importFrom 'progress::' code before progress_bar
 #' 
 #' @examples 
 #'    X = as.matrix(fread("X_rightdim.txt"))
@@ -24,9 +21,6 @@
 
 varComp <- function(K, Y, X){
   ptm <- proc.time()
-  snpNum <- dim(X)[2]
-  indiNum <- dim(X)[1]
-  geneNum <- dim(Y)[2]
   K_origin = K
   
   for (i in 1:dim(Y)[2]) {
@@ -71,31 +65,11 @@ varComp <- function(K, Y, X){
   vc = as.matrix(read.table("VC.txt"))
   Vg = median(vc[,1])
   Ve = median(vc[,2])
-  
-  chol_solve <- function(K) {
-    a = eigen(K)$vectors
-    b = eigen(K)$values
-    b[b < 1e-13] = 1e-13
-    b = 1 / sqrt(b)
-    return(a %*% diag(b) %*% t(a))
-  }
-  rotate <- function(Y, sigma) {
-    U <- chol_solve(sigma)
-    tU <- t(U)
-    UY = tU %*% Y
-    return(UY)
-  }
-  
-  I = diag(indiNum)
-  sigma = Vg * K + Ve * I
-  UY = rotate(Y, sigma)		# Rotate genotypes and phenotypes
-  UX = rotate(X, sigma)
+
   
   print(proc.time() - ptm)
   return(list(
     "Vg" = Vg,
-    "Ve" = Ve,
-    "UY" = UY,
-    "UX" = UX
+    "Ve" = Ve
   ))
 }
