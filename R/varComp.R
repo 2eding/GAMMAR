@@ -63,13 +63,7 @@ varComp <- function(K, Y, X){
   file.remove("Ve_temp.txt")
   write.table(VCbind, "VC.txt", row.names = F, col.names = F, quote = F)
   vc = as.matrix(read.table("VC.txt"))
-  Vg = median(vc[,1])
-  Ve = median(vc[,2])
 
-  
   print(proc.time() - ptm)
-  return(list(
-    "Vg" = Vg,
-    "Ve" = Ve
-  ))
+  return(vc)
 }

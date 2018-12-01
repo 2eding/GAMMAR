@@ -17,8 +17,7 @@
 #' @param K is obtained from the Kinship function
 #' @param Y is the phenotype matrix, individual x phenotype
 #' @param X is the SNP matrix, individual x snp
-#' @param Vg is obtained from the varComp function => VC$Vg
-#' @param Ve is obtained from the varComp function => VC$Ve
+#' @param VC is obtained from the varComp function
 #' @param mat_itr is specifies the number of permutations.
 #' @param num.parallel Number of parallel processes or a predefined socket cluster
 #' 
@@ -37,7 +36,7 @@
 #'    # ps[1] = p-value
 #'    # ps[2] = f-value
 #' @export
-run_grammar<- function(K, Y, X, Vg, Ve, max_itr, num.parallel) {
+run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
   ptm <- proc.time()
   cl <- parallel::makeCluster(num.parallel)
   parallel::setDefaultCluster(cl)
@@ -51,7 +50,7 @@ run_grammar<- function(K, Y, X, Vg, Ve, max_itr, num.parallel) {
     return(res$aov.tab$F.Model[1])
   }
 
-  gamma <- function(Y, x, max_itr = 4, num.parallel) {
+  gamma <- function(Y, x, max_itr, num.parallel) {
     for (i in 2:max_itr) {
       p = 10^i
       limit = 5/p
@@ -97,8 +96,8 @@ run_grammar<- function(K, Y, X, Vg, Ve, max_itr, num.parallel) {
   indiNum <- dim(X)[1]
   geneNum <- dim(Y)[2]
   
-  # Vg = median(VC$Vg)		# Variance components
-  # Ve = median(VC$Ve)
+  Vg = median(VC[,1])		# Variance components
+  Ve = median(VC[,2])
   
   I = diag(indiNum)
   sigma = Vg*K + Ve*I
