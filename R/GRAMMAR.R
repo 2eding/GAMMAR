@@ -50,7 +50,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
     return(res$aov.tab$F.Model[1])
   }
 
-  gamma <- function(Y, x, max_itr) {
+  gamma <- function(Y, x, max_itr=max_itr) {
     for (i in 2:max_itr) {
       p = 10^i
       limit = 5/p
@@ -75,7 +75,6 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
     
     '%dopar%' <- foreach::"%dopar%"
     
-    require(foreach)
     foreach::foreach(i=1:Ng) %dopar% {
       pval[i] = gamma(newY, X[, i], max_itr)
       fval[i] = getF(newY, X[, i], 1)
