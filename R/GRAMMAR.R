@@ -62,7 +62,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
     return(pval)
   }
 
-  run_gamma <- function(Y, X, num.parallel) {
+  run_gamma <- function(Y, X, max_itr, num.parallel) {
     Ng = dim(X)[2]
     pval = 1:Ng
     fval = 1:Ng
@@ -123,7 +123,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
   UY = rotate(Y,sigma)		# Rotate genotypes and phenotypes
   UX = rotate(X,sigma)
   
-  pf = run_gamma(UY, UX, num.parallel)
+  pf = run_gamma(UY, UX, max_itr, num.parallel)
 
   parallel::stopCluster(cl)
   
