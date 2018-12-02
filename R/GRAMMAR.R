@@ -40,10 +40,12 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
   ptm <- proc.time()
 
   getp <- function(Y, x, p) {
+    require(parallel)
     res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores"))
     return(res$aov.tab$"Pr(>F)"[1])
   }
   getF <- function(Y, x, p) {
+    require(parallel)
     res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores"))
     return(res$aov.tab$F.Model[1])
   }
@@ -66,7 +68,18 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
     fval = 1:Ng
     newY = Y - min(Y)
     
+    require(snow)
+    cl <- parallel::makeCluster(spec = num.parallel, type = "SOCK")
+    doParallel::registerDoParallel(cl)
     Sys.setenv("MC_CORES"=num.parallel)
+    
+    foreach::foreach(i=1:Ng) %dopar% {
+      pval[i] = gamma(newY, X[, i], max_itr)
+      fval[i] = getF(newY, X[, i], 1)
+      cat(i, ". f =", fval[i], " p =", pval[i], "\n")
+      write.table(pval[i], "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
+      write.table(fval[i], "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
+    }
     
     for (i in 1:Ng) {
       require(parallel)
@@ -108,7 +121,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
   UX = rotate(X,sigma)
   
   pf = run_gamma(UY, UX, num.parallel)
-  
+
   parallel::stopCluster(cl)
   
   print(proc.time() - ptm)

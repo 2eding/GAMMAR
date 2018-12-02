@@ -14,5 +14,8 @@ Depend: R ( >= 3.5.0)
 Imports: 
     progress,
     lmmlite,
-    vegan
+    vegan,
+    snow,
+    parallel,
+    doParallel
 Remotes: kbroman/lmmlite
