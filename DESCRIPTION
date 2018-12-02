@@ -17,5 +17,6 @@ Imports:
     vegan,
     snow,
     parallel,
-    doParallel
+    doParallel,
+    foreach
 Remotes: kbroman/lmmlite
