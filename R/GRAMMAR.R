@@ -73,7 +73,10 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
     doParallel::registerDoParallel(cl)
     Sys.setenv("MC_CORES"=num.parallel)
     
-    foreach::foreach(i=1:Ng) foreach::"%dopar%" {
+    %dopar% <- foreach::"%dopar%"
+    
+    require(foreach)
+    foreach::foreach(i=1:Ng) %dopar% {
       pval[i] = gamma(newY, X[, i], max_itr)
       fval[i] = getF(newY, X[, i], 1)
       cat(i, ". f =", fval[i], " p =", pval[i], "\n")
