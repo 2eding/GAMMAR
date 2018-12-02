@@ -92,7 +92,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
     #   write.table(pval[i], "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
     #   write.table(fval[i], "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
     # }
-    return(list("p" = pval, "f" = fval))
+    # return(list("p" = pval, "f" = fval))
   }
   
   chol_solve <- function(K) {
