@@ -38,23 +38,21 @@
 #' @export
 run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
   ptm <- proc.time()
-  cl <- parallel::makeCluster(num.parallel)
-  parallel::setDefaultCluster(cl)
-  
-  getp <- function(Y, x, p, num.parallel) {
-    res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores",cl))
+
+  getp <- function(Y, x, p) {
+    res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores"))
     return(res$aov.tab$"Pr(>F)"[1])
   }
-  getF <- function(Y, x, p, num.parallel) {
-    res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores",cl))
+  getF <- function(Y, x, p) {
+    res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores"))
     return(res$aov.tab$F.Model[1])
   }
 
-  gamma <- function(Y, x, max_itr, num.parallel) {
+  gamma <- function(Y, x, max_itr) {
     for (i in 2:max_itr) {
       p = 10^i
       limit = 5/p
-      pval = getp(Y, x, p, num.parallel)
+      pval = getp(Y, x, p)
       if (pval > limit) {
         break
       }
@@ -62,17 +60,21 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
     return(pval)
   }
 
-  run_gamma <- function(Y, X) {
+  run_gamma <- function(Y, X, num.parallel) {
     Ng = dim(X)[2]
     pval = 1:Ng
     fval = 1:Ng
     newY = Y - min(Y)
     
+    Sys.setenv("MC_CORES"=num.parallel)
+    
     for (i in 1:Ng) {
-      doParallel::registerDoParallel(cl, cores = num.parallel)
-      pval[i] = gamma(newY, X[, i], max_itr, cl)
-      fval[i] = getF(newY, X[, i], 1, cl)
+      require(parallel)
+      pval[i] = gamma(newY, X[, i], max_itr)
+      fval[i] = getF(newY, X[, i], 1)
       cat(i, ". f =", fval[i], " p =", pval[i], "\n")
+      write.table(pval[i], "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
+      write.table(fval[i], "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
     }
     return(list("p" = pval, "f" = fval))
   }
@@ -105,11 +107,9 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
   UY = rotate(Y,sigma)		# Rotate genotypes and phenotypes
   UX = rotate(X,sigma)
   
-  pf = run_gamma(UY, UX)
-  parallel::stopCluster(cl)
+  pf = run_gamma(UY, UX, num.parallel)
   
-  write.table(pf$p, "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
-  write.table(pf$f, "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
+  parallel::stopCluster(cl)
   
   print(proc.time() - ptm)
   return(list("P" = pf$p, "F" = pf$f))
