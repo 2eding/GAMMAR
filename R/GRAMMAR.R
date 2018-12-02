@@ -80,7 +80,6 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
     foreach::foreach(i=1:Ng) %dopar% {
       pval[i] = esgamma(newY, X[, i], max_itr)
       fval[i] = getF(newY, X[, i], 1)
-      cat(i, ". f =", fval[i], " p =", pval[i], "\n")
       write.table(pval[i], "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
       write.table(fval[i], "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
     }
