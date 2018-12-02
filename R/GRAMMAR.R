@@ -50,7 +50,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
     return(res$aov.tab$F.Model[1])
   }
 
-  gamma <- function(Y, x, max_itr) {
+  esgamma <- function(Y, x, max_itr) {
     Y = Y
     x = x
     for (i in 2:max_itr) {
@@ -78,7 +78,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
     '%dopar%' <- foreach::"%dopar%"
     
     foreach::foreach(i=1:Ng) %dopar% {
-      pval[i] = gamma(newY, X[, i], max_itr)
+      pval[i] = esgamma(newY, X[, i], max_itr)
       fval[i] = getF(newY, X[, i], 1)
       cat(i, ". f =", fval[i], " p =", pval[i], "\n")
       write.table(pval[i], "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
