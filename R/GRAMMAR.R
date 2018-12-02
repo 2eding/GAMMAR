@@ -75,7 +75,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
     
     '%dopar%' <- foreach::"%dopar%"
     
-    foreach::foreach(i=1:Ng, .export = c('max_itr'), .packages = c('gamma', 'getF')) %dopar% {
+    foreach::foreach(i=1:Ng, .export = c('max_itr')) %dopar% {
       pval[i] = gamma(newY, X[, i], max_itr)
       fval[i] = getF(newY, X[, i], 1)
       cat(i, ". f =", fval[i], " p =", pval[i], "\n")
