@@ -39,36 +39,36 @@
 run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
   ptm <- proc.time()
 
-  getp <- function(Y, x, p) {
-    require(parallel)
-    res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores"))
-    return(res$aov.tab$"Pr(>F)"[1])
-  }
-  getF <- function(Y, x, p) {
-    require(parallel)
-    res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores"))
-    return(res$aov.tab$F.Model[1])
-  }
-
-  esgamma <- function(Y, x, max_itr) {
-    Y = Y
-    x = x
-    for (i in 2:max_itr) {
-      p = 10^i
-      limit = 5/p
-      pval = getp(Y, x, p)
-      if (pval > limit) {
-        break
-      }
-    }
-    return(pval)
-  }
-
   run_gamma <- function(Y, X, max_itr, num.parallel) {
     Ng = dim(X)[2]
     pval = 1:Ng
     fval = 1:Ng
     newY = Y - min(Y)
+    
+    getp <- function(Y, x, p) {
+      require(parallel)
+      res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores"))
+      return(res$aov.tab$"Pr(>F)"[1])
+    }
+    getF <- function(Y, x, p) {
+      require(parallel)
+      res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores"))
+      return(res$aov.tab$F.Model[1])
+    }
+    
+    esgamma <- function(Y, x, max_itr) {
+      Y = Y
+      x = x
+      for (i in 2:max_itr) {
+        p = 10^i
+        limit = 5/p
+        pval = getp(Y, x, p)
+        if (pval > limit) {
+          break
+        }
+      }
+      return(pval)
+    }
     
     require(snow)
     cl <- parallel::makeCluster(spec = num.parallel, type = "SOCK")
