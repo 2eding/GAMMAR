@@ -51,6 +51,8 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
   }
 
   gamma <- function(Y, x, max_itr) {
+    Y = Y
+    x = x
     for (i in 2:max_itr) {
       p = 10^i
       limit = 5/p
