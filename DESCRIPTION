@@ -12,7 +12,6 @@ LazyData: true
 RoxygenNote: 6.1.0
 Depend: R ( >= 3.5.0)
 Imports: 
-    progress,
     lmmlite,
     vegan,
     snow,
