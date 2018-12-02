@@ -73,7 +73,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
     doParallel::registerDoParallel(cl)
     Sys.setenv("MC_CORES"=num.parallel)
     
-    %dopar% <- foreach::"%dopar%"
+    '%dopar%' <- foreach::"%dopar%"
     
     require(foreach)
     foreach::foreach(i=1:Ng) %dopar% {
