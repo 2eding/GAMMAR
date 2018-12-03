@@ -83,18 +83,6 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
       write.table(pval[i], "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
       write.table(fval[i], "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
     }
-    
-    parallel::stopCluster(cl)
-    
-    # for (i in 1:Ng) {
-    #   require(parallel)
-    #   pval[i] = gamma(newY, X[, i], max_itr)
-    #   fval[i] = getF(newY, X[, i], 1)
-    #   cat(i, ". f =", fval[i], " p =", pval[i], "\n")
-    #   write.table(pval[i], "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
-    #   write.table(fval[i], "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
-    # }
-    # return(list("p" = pval, "f" = fval))
   }
   
   chol_solve <- function(K) {
