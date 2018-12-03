@@ -84,6 +84,8 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
       write.table(fval[i], "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
     }
     
+    parallel::stopCluster(cl)
+    
     # for (i in 1:Ng) {
     #   require(parallel)
     #   pval[i] = gamma(newY, X[, i], max_itr)
@@ -125,8 +127,6 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
   
   pf = run_gamma(UY, UX, max_itr, num.parallel)
 
-  parallel::stopCluster(cl)
-  
   print(proc.time() - ptm)
   return(list("P" = pf$p, "F" = pf$f))
 }
