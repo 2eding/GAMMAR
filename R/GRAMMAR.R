@@ -38,7 +38,7 @@
 #' @export
 run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
   ptm <- proc.time()
-
+  
   run_gamma <- function(Y, X, max_itr, num.parallel) {
     Ng = dim(X)[2]
     pval = 1:Ng
@@ -46,12 +46,10 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
     newY = Y - min(Y)
     
     getp <- function(Y, x, p) {
-      require(parallel)
       res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores"))
       return(res$aov.tab$"Pr(>F)"[1])
     }
     getF <- function(Y, x, p) {
-      require(parallel)
       res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores"))
       return(res$aov.tab$F.Model[1])
     }
@@ -70,19 +68,22 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
       return(pval)
     }
     
-    require(snow)
+    require(doParallel)
     cl <- parallel::makeCluster(spec = num.parallel, type = "SOCK")
     doParallel::registerDoParallel(cl)
     Sys.setenv("MC_CORES"=num.parallel)
     
     '%dopar%' <- foreach::"%dopar%"
     
-    foreach::foreach(i=1:Ng) %dopar% {
+    result <- foreach::foreach(i=1:Ng, .combine = rbind) %dopar% {
       pval[i] = esgamma(newY, X[, i], max_itr)
       fval[i] = getF(newY, X[, i], 1)
-      write.table(pval[i], "P.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
-      write.table(fval[i], "F.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, append=T, sep="\n")
+      return(list(pval[i], fval[i]))
     }
+    
+    write.table(result, "result.txt", row.names = F, col.names = c("P_value", "F_value"), quote = F)
+    
+    stopCluster(cl)
   }
   
   chol_solve <- function(K) {
@@ -114,7 +115,6 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
   UX = rotate(X,sigma)
   
   pf = run_gamma(UY, UX, max_itr, num.parallel)
-
+  
   print(proc.time() - ptm)
-  return(list("P" = pf$p, "F" = pf$f))
 }
