@@ -20,47 +20,46 @@
 #' @param VC is obtained from the varComp function
 #' @param mat_itr is specifies the number of permutations.
 #' @param num.parallel Number of parallel processes or a predefined socket cluster
+#' @param outPath is the file output path 
 #' 
 #' @return p-value and f-value
 #' 
 #' @importFrom 'vegan::' code before adonis
 #' @examples 
 #'    X = as.matrix(fread("SNP_rightdim.txt"))
-#'    K = Kinship(t(X))
-#'    
 #'    Y = as.matrix(fread("Phenotype_rightdim.txt"))
+#'    
+#'    K = Kinship(t(X))
 #'    VC = varComp(K, Y, X)
 #'    
-#'    ps = run_grammar(VC$UY, VC$UX, max_itr = 4, num.parallel = 2)
+#'    result = run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 2, outPath = "./")
 #'    
-#'    # ps[1] = p-value
-#'    # ps[2] = f-value
 #' @export
-run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
+run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
   ptm <- proc.time()
   
-  run_gamma <- function(Y, X, max_itr, num.parallel) {
-    Ng = dim(X)[2]
-    pval = 1:Ng
-    fval = 1:Ng
-    newY = Y - min(Y)
+  run_gamma <- function(Y, X, max_itr, num.parallel, outPath) {
+    Ng <- dim(X)[2]
+    pval <- 1:Ng
+    fval <- 1:Ng
+    newY <- Y - min(Y)
     
     getp <- function(Y, x, p) {
-      res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores"))
+      res <- vegan::adonis(Y ~ x, perm = p)
       return(res$aov.tab$"Pr(>F)"[1])
     }
     getF <- function(Y, x, p) {
-      res = vegan::adonis(Y ~ x, perm = p, parallel = getOption("mc.cores"))
+      res <- vegan::adonis(Y ~ x, perm = p)
       return(res$aov.tab$F.Model[1])
     }
     
     esgamma <- function(Y, x, max_itr) {
-      Y = Y
-      x = x
+      Y <- Y
+      x <- x
       for (i in 2:max_itr) {
-        p = 10^i
-        limit = 5/p
-        pval = getp(Y, x, p)
+        p <- 10^i
+        limit <- 5/p
+        pval <- getp(Y, x, p)
         if (pval > limit) {
           break
         }
@@ -69,35 +68,43 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
     }
     
     require(doParallel)
-    cl <- parallel::makeCluster(spec = num.parallel, type = "SOCK")
+    cl <- parallel::makeCluster(spec = num.parallel, type = "SOCK", outfile = "log.txt")
     doParallel::registerDoParallel(cl)
-    Sys.setenv("MC_CORES"=num.parallel)
     
     '%dopar%' <- foreach::"%dopar%"
     
-    result <- foreach::foreach(i=1:Ng, .combine = rbind) %dopar% {
-      pval[i] = esgamma(newY, X[, i], max_itr)
-      fval[i] = getF(newY, X[, i], 1)
-      return(list(pval[i], fval[i]))
+    
+    foreach::foreach(i=1:Ng, .combine = 'rbind', .verbose = T) %dopar% {
+      pval[i] <- esgamma(newY, X[, i], max_itr)
+      pv <- pval[i]
+      fval[i] <- getF(newY, X[, i], 1)
+      fv <- fval[i]
+      
+      cat(i, "\t", pv, "\t", fv, file=paste(outPath, "/result.txt", sep = ""), append = T)
+      cat("\n", file=paste(outPath, "/result.txt", sep = ""), sep = "", append=T)
+      
     }
     
-    write.table(result, "result.txt", row.names = F, col.names = c("P_value", "F_value"), quote = F)
+    tempread <- as.matrix(read.table(paste(outPath, "/result.txt", sep = "")))
+    file.remove(paste(outPath, "/result.txt", sep = ""))
+    towrite <- tempread[order(tempread[,1]),]
+    write.table(towrite, paste(outPath, "/result.txt", sep = ""), row.names = F, col.names = c("Num\t", "P_value\t", "F_value"), quote = F)
     
     stopCluster(cl)
   }
   
   chol_solve <- function(K) {
-    a = eigen(K)$vectors
-    b = eigen(K)$values
-    b[b < 1e-13] = 1e-13
-    b = 1 / sqrt(b)
+    a <- eigen(K)$vectors
+    b <- eigen(K)$values
+    b[b < 1e-13] <- 1e-13
+    b <- 1 / sqrt(b)
     return(a %*% diag(b) %*% t(a))
   }
   
   rotate <- function(Y, sigma) {
     U <- chol_solve(sigma)
     tU <- t(U)
-    UY = tU %*% Y
+    UY <- tU %*% Y
     return(UY)
   }
   
@@ -105,16 +112,16 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel) {
   indiNum <- dim(X)[1]
   geneNum <- dim(Y)[2]
   
-  Vg = median(VC[,1])		# Variance components
-  Ve = median(VC[,2])
+  Vg <- median(VC[,1])		# Variance components
+  Ve <- median(VC[,2])
   
-  I = diag(indiNum)
-  sigma = Vg*K + Ve*I
+  I <- diag(indiNum)
+  sigma <- Vg*K + Ve*I
   
-  UY = rotate(Y,sigma)		# Rotate genotypes and phenotypes
-  UX = rotate(X,sigma)
+  UY <- rotate(Y,sigma)		# Rotate genotypes and phenotypes
+  UX <- rotate(X,sigma)
   
-  pf = run_gamma(UY, UX, max_itr, num.parallel)
+  pf <- run_gamma(UY, UX, max_itr, num.parallel, outPath)
   
   print(proc.time() - ptm)
 }

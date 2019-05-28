@@ -13,8 +13,9 @@
 #' 
 #' @examples 
 #'    X = as.matrix(fread("X_rightdim.txt"))
-#'    K = Kinship(t(X))
 #'    Y = as.matrix(fread("Y_rightdim.txt"))
+#'    K = Kinship(t(X))
+#'    
 #'    VC = varComp(K, Y, X)
 #' @export
 
