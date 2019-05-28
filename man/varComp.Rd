@@ -15,17 +15,14 @@ varComp(K, Y, X)
 }
 \value{
 Variance components Vg: genetic factor(VC[1]) Ve: environment factor(VC[2])
-
-UY is the third output value of the varComp function.
-
-UX is the fourth output value of the varComp function.
 }
 \description{
 varComp function will estimate variance components
 }
 \examples{
    X = as.matrix(fread("X_rightdim.txt"))
-   K = Kinship(t(X))
    Y = as.matrix(fread("Y_rightdim.txt"))
+   K = Kinship(t(X))
+   
    VC = varComp(K, Y, X)
 }

@@ -4,16 +4,20 @@
 \alias{run_grammar}
 \title{Generalized Renown Analysis of Molecular variance for Mixed model Analysis R package}
 \usage{
-run_grammar(UY, UX, max_itr, num.parallel)
+run_grammar(K, Y, X, VC, max_itr, num.parallel, outPath)
 }
 \arguments{
-\item{UY}{is obtained from the varComp function}
+\item{K}{is obtained from the Kinship function}
 
-\item{UX}{is obtained from the varComp function}
+\item{Y}{is the phenotype matrix, individual x phenotype}
+
+\item{X}{is the SNP matrix, individual x snp}
+
+\item{VC}{is obtained from the varComp function}
 
 \item{num.parallel}{Number of parallel processes or a predefined socket cluster}
 
-\item{K}{is obtained from the Kinship function}
+\item{outPath}{is the file output path}
 
 \item{mat_itr}{is specifies the number of permutations.}
 }
@@ -21,17 +25,15 @@ run_grammar(UY, UX, max_itr, num.parallel)
 p-value and f-value
 }
 \description{
-run_gamma function calculates p-value and f-value.
+run_grammar function calculates p-value and f-value.
 }
 \examples{
    X = as.matrix(fread("SNP_rightdim.txt"))
-   K = Kinship(t(X))
-   
    Y = as.matrix(fread("Phenotype_rightdim.txt"))
+   
+   K = Kinship(t(X))
    VC = varComp(K, Y, X)
    
-   ps = run_grammar(VC[3], VC[4], max_itr = 4, num.parallel = 2)
+   result = run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 2, outPath = "./")
    
-   # ps[1] = p-value
-   # ps[2] = f-value
 }
