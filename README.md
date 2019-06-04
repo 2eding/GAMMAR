@@ -2,13 +2,14 @@
 Generalized Renown Analysis of Molecular variance for Mixed model Analysis R package
 
 # usage
-library(data.table)
-library(devtools)
-install_github("2eding/GRAMMAR")
+library(data.table)<br>
+library(devtools)<br>
+install_github("2eding/GRAMMAR")<br>
+library(GRAMMAR)<br><br>
 
-X = as.matrix(fread("X_rightdim.txt"))
-Y = as.matrix(fread("Y_rightdim.txt"))
+X = as.matrix(fread("X_rightdim.txt"))<br>
+Y = as.matrix(fread("Y_rightdim.txt"))<br><br>
 
-K = Kinship(t(X))
-VC = varComp(K, Y, X)
-run = run_grammar(VC[3], VC[4], max_itr = 4, num.parallel = 4)
+K = Kinship(t(X))<br>
+VC = varComp(K, Y, X)<br>
+run = run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 4, outPath = "./")
