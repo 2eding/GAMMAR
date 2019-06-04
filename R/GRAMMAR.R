@@ -24,7 +24,7 @@
 #' 
 #' @return p-value and f-value
 #' 
-#' @importFrom 'vegan::' code before adonis
+#' @importFrom vegan adonis
 #' @examples 
 #'    X = as.matrix(fread("SNP_rightdim.txt"))
 #'    Y = as.matrix(fread("Phenotype_rightdim.txt"))

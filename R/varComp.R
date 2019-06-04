@@ -6,10 +6,10 @@
 #' @param Y is the phenotype matrix, individual x phenotype
 #' @param X is the SNP matrix, individual x snp
 #' 
-#' @return Variance components Vg: genetic factor(VC[1]) Ve: environment factor(VC[2])
+#' @return Variance components Vg: genetic factor Ve: environment factor
 #' 
-#' @importFrom 'lmmlite::' code before eigen_rotation
-#' @importFrom 'lmmlite::' code before fitLMM
+#' @importFrom lmmlite eigen_rotation
+#' @importFrom lmmlite fitLMM
 #' 
 #' @examples 
 #'    X = as.matrix(fread("X_rightdim.txt"))
