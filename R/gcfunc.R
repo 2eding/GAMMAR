@@ -11,7 +11,7 @@
 #' @importFrom stats qchisq
 #' 
 #' @examples 
-#'    P = as.matrix(fread("P.txt"))
+#'    P = as.matrix(read.table("./P.txt"))
 #'    gcp = gcfunc(P)
 #' @export
 gcfunc <- function(P){

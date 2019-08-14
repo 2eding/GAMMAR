@@ -29,8 +29,8 @@
 #' @importFrom utils write.table
 #' 
 #' @examples 
-#'    X = as.matrix(read.table("X_rightdim.txt"))
-#'    Y = as.matrix(read.table("Y_rightdim.txt"))
+#'    X = as.matrix(read.table("./X_rightdim.txt"))
+#'    Y = as.matrix(read.table("./Y_rightdim.txt"))
 #'    
 #'    K = Kinship(t(X))
 #'    VC = varComp(K, Y, X)
@@ -125,5 +125,5 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
   
   pf <- run_gamma(UY, UX, max_itr, num.parallel, outPath)
   
-  print(proc.time() - ptm)
+  write.table(proc.time() - ptm, "time.txt", row.names = F, col.names = F, quote = F)
 }

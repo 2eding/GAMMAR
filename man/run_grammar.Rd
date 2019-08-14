@@ -28,8 +28,8 @@ p-value and f-value
 run_grammar function calculates p-value and f-value.
 }
 \examples{
-   X = as.matrix(read.table("X_rightdim.txt"))
-   Y = as.matrix(read.table("Y_rightdim.txt"))
+   X = as.matrix(read.table("./X_rightdim.txt"))
+   Y = as.matrix(read.table("./Y_rightdim.txt"))
    
    K = Kinship(t(X))
    VC = varComp(K, Y, X)
