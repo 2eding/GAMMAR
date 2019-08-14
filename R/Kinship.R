@@ -2,10 +2,14 @@
 #'
 #' Kinship function will estimate kinship coefficient
 #' 
-#' @param X is the SNP matrix, individual x snp
+#' @param X is the SNP matrix, individual x SNPs
+#' 
+#' @importFrom stats sd
+#' @importFrom stats cor
+#' @importFrom utils write.table
 #' 
 #' @examples
-#'    X = as.matrix(fread("SNP_rightdim.txt"))
+#'    X = as.matrix(read.table("X_rightdim.txt"))
 #'    K = Kinship(t(X))
 #' @export
 

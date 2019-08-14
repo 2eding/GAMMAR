@@ -3,8 +3,8 @@
 #' varComp function will estimate variance components
 #' 
 #' @param K is obtained from the Kinship function
-#' @param Y is the phenotype matrix, individual x phenotype
-#' @param X is the SNP matrix, individual x snp
+#' @param Y is the phenotype matrix, individual x phenotypes
+#' @param X is the SNP matrix, individual x SNPs
 #' 
 #' @return Variance components Vg: genetic factor Ve: environment factor
 #' 
@@ -12,8 +12,8 @@
 #' @importFrom lmmlite fitLMM
 #' 
 #' @examples 
-#'    X = as.matrix(fread("X_rightdim.txt"))
-#'    Y = as.matrix(fread("Y_rightdim.txt"))
+#'    X = as.matrix(read.table("X_rightdim.txt"))
+#'    Y = as.matrix(read.table("Y_rightdim.txt"))
 #'    K = Kinship(t(X))
 #'    
 #'    VC = varComp(K, Y, X)

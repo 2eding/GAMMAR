@@ -18,16 +18,19 @@
 #' @param Y is the phenotype matrix, individual x phenotype
 #' @param X is the SNP matrix, individual x snp
 #' @param VC is obtained from the varComp function
-#' @param mat_itr is specifies the number of permutations.
+#' @param max_itr is specifies the number of permutations.
 #' @param num.parallel Number of parallel processes or a predefined socket cluster
 #' @param outPath is the file output path 
 #' 
 #' @return p-value and f-value
 #' 
 #' @importFrom vegan adonis
+#' @importFrom utils read.table
+#' @importFrom utils write.table
+#' 
 #' @examples 
-#'    X = as.matrix(fread("SNP_rightdim.txt"))
-#'    Y = as.matrix(fread("Phenotype_rightdim.txt"))
+#'    X = as.matrix(read.table("X_rightdim.txt"))
+#'    Y = as.matrix(read.table("Y_rightdim.txt"))
 #'    
 #'    K = Kinship(t(X))
 #'    VC = varComp(K, Y, X)
@@ -67,7 +70,6 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
       return(pval)
     }
     
-    require(doParallel)
     cl <- parallel::makeCluster(spec = num.parallel, type = "SOCK", outfile = "log.txt")
     doParallel::registerDoParallel(cl)
     
@@ -90,7 +92,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
     towrite <- tempread[order(tempread[,1]),]
     write.table(towrite, paste(outPath, "/result.txt", sep = ""), row.names = F, col.names = c("Num\t", "P_value\t", "F_value"), quote = F)
     
-    stopCluster(cl)
+    parallel::stopCluster(cl)
   }
   
   chol_solve <- function(K) {

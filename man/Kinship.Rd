@@ -7,12 +7,12 @@
 Kinship(X)
 }
 \arguments{
-\item{X}{is the SNP matrix, individual x snp}
+\item{X}{is the SNP matrix, individual x SNPs}
 }
 \description{
 Kinship function will estimate kinship coefficient
 }
 \examples{
-   X = as.matrix(fread("SNP_rightdim.txt"))
+   X = as.matrix(read.table("X_rightdim.txt"))
    K = Kinship(t(X))
 }

@@ -15,11 +15,11 @@ run_grammar(K, Y, X, VC, max_itr, num.parallel, outPath)
 
 \item{VC}{is obtained from the varComp function}
 
+\item{max_itr}{is specifies the number of permutations.}
+
 \item{num.parallel}{Number of parallel processes or a predefined socket cluster}
 
 \item{outPath}{is the file output path}
-
-\item{mat_itr}{is specifies the number of permutations.}
 }
 \value{
 p-value and f-value
@@ -28,8 +28,8 @@ p-value and f-value
 run_grammar function calculates p-value and f-value.
 }
 \examples{
-   X = as.matrix(fread("SNP_rightdim.txt"))
-   Y = as.matrix(fread("Phenotype_rightdim.txt"))
+   X = as.matrix(read.table("X_rightdim.txt"))
+   Y = as.matrix(read.table("Y_rightdim.txt"))
    
    K = Kinship(t(X))
    VC = varComp(K, Y, X)

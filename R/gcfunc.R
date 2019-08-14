@@ -5,6 +5,11 @@
 #' @param P is the p value from the result of GRAMMAR function
 #' 
 #' @return completed value of the genomic control of p value
+#' 
+#' @importFrom stats median
+#' @importFrom stats pchisq
+#' @importFrom stats qchisq
+#' 
 #' @examples 
 #'    P = as.matrix(fread("P.txt"))
 #'    gcp = gcfunc(P)

@@ -9,9 +9,9 @@ varComp(K, Y, X)
 \arguments{
 \item{K}{is obtained from the Kinship function}
 
-\item{Y}{is the phenotype matrix, individual x phenotype}
+\item{Y}{is the phenotype matrix, individual x phenotypes}
 
-\item{X}{is the SNP matrix, individual x snp}
+\item{X}{is the SNP matrix, individual x SNPs}
 }
 \value{
 Variance components Vg: genetic factor Ve: environment factor
@@ -20,8 +20,8 @@ Variance components Vg: genetic factor Ve: environment factor
 varComp function will estimate variance components
 }
 \examples{
-   X = as.matrix(fread("X_rightdim.txt"))
-   Y = as.matrix(fread("Y_rightdim.txt"))
+   X = as.matrix(read.table("X_rightdim.txt"))
+   Y = as.matrix(read.table("Y_rightdim.txt"))
    K = Kinship(t(X))
    
    VC = varComp(K, Y, X)
