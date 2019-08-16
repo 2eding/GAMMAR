@@ -125,6 +125,5 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
   
   pf <- run_gamma(UY, UX, max_itr, num.parallel, outPath)
   
-  calTime <- proc.time() - ptm
-  write.table(calTime, paste(outPath, "/time.txt", sep = ""), row.names = F, col.names = F, quote = F)
+  print(proc.time() - ptm)
 }
