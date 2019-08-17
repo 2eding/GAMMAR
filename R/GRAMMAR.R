@@ -93,6 +93,8 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
     write.table(towrite, paste(outPath, "/result.txt", sep = ""), row.names = F, col.names = c("Num\t", "P_value\t", "F_value"), quote = F)
     
     parallel::stopCluster(cl)
+    
+    return(list(pv, fv))
   }
   
   chol_solve <- function(K) {
@@ -124,6 +126,8 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
   UX <- rotate(X,sigma)
   
   pf <- run_gamma(UY, UX, max_itr, num.parallel, outPath)
+  write.table(pf[1], paste(outPath, "/P.txt", sep = ""), row.names = F, col.names = F, quote = F)
+  write.table(pf[2], paste(outPath, "/F.txt", sep = ""), row.names = F, col.names = F, quote = F)
   
   print(proc.time() - ptm)
 }
