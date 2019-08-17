@@ -84,6 +84,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
       
       cat(i, "\t", pv, "\t", fv, "\n", file=paste(outPath, "/result.txt", sep = ""), append = T)
       #cat("\n", file=paste(outPath, "/result.txt", sep = ""), sep = "", append=T)
+      return(list(pv, fv))
       
     }
     
@@ -94,7 +95,6 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
     
     parallel::stopCluster(cl)
     
-    return(list(pv, fv))
   }
   
   chol_solve <- function(K) {
