@@ -17,5 +17,6 @@ Imports:
     snow,
     parallel,
     doParallel,
-    foreach
+    foreach,
+    data.table
 Remotes: kbroman/lmmlite

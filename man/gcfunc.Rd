@@ -16,6 +16,6 @@ completed value of the genomic control of p value
 Perform genomic control of p value
 }
 \examples{
-   P = as.matrix(read.table("./P.txt"))
+   P = as.matrix(read.table(Pvaluedata))
    gcp = gcfunc(P)
 }

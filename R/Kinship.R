@@ -9,7 +9,7 @@
 #' @importFrom utils write.table
 #' 
 #' @examples
-#'    X = as.matrix(read.table("./X_rightdim.txt"))
+#'    X = as.matrix(read.table(Genotypesdata))
 #'    K = Kinship(t(X))
 #' @export
 

@@ -13,6 +13,6 @@ Kinship(X)
 Kinship function will estimate kinship coefficient
 }
 \examples{
-   X = as.matrix(read.table("./X_rightdim.txt"))
+   X = as.matrix(read.table(Genotypesdata))
    K = Kinship(t(X))
 }

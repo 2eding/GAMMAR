@@ -29,8 +29,8 @@
 #' @importFrom utils write.table
 #' 
 #' @examples 
-#'    X = as.matrix(read.table("./X_rightdim.txt"))
-#'    Y = as.matrix(read.table("./Y_rightdim.txt"))
+#'    X = as.matrix(read.table(Genotypesdata))
+#'    Y = as.matrix(read.table(Phenotypesdata))
 #'    
 #'    K = Kinship(t(X))
 #'    VC = varComp(K, Y, X)
