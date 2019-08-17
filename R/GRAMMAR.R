@@ -82,16 +82,14 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
       fval[i] <- getF(newY, X[, i], 1)
       fv <- fval[i]
       
-      cat(i, "\t", pv, "\t", fv, "\n", file=paste(outPath, "/result.txt", sep = ""), append = T)
+      cat(i, "\t", pv, "\t", fv, "\n\n", file=paste(outPath, "/result.txt", sep = ""), append = T)
       #cat("\n", file=paste(outPath, "/result.txt", sep = ""), sep = "", append=T)
-      return(list(pv, fv))
-      
     }
     
     tempread <- as.matrix(read.table(paste(outPath, "/result.txt", sep = "")))
     file.remove(paste(outPath, "/result.txt", sep = ""))
     towrite <- tempread[order(tempread[,1]),]
-    write.table(towrite, paste(outPath, "/result.txt", sep = ""), row.names = F, col.names = c("Num\t", "P_value\t", "F_value"), quote = F)
+    write.table(towrite, paste(outPath, "/result.txt", sep = ""), row.names = F, col.names = c("SNP_Num\t", "P_value\t", "F_value"), quote = F)
     
     parallel::stopCluster(cl)
     
