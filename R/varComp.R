@@ -58,8 +58,8 @@ varComp <- function(K, Y, X){
     #   sep = "\n"
     # )
   # }
-  lmmlite_func <- function(i){
-    e <- lmmlite::eigen_rotation(K, t(Y)[i,], use_cpp = T)
+  lmmlite_func <- function(x){
+    e <- lmmlite::eigen_rotation(K, x, use_cpp = T)
     VC <- lmmlite::fitLMM(
       e$Kva,
       e$y,
@@ -69,32 +69,15 @@ varComp <- function(K, Y, X){
       tol = 1e-6,
       check_boundary = T
     )
-    write.table(
-      VC$sigmasq_g,
-      "Vg_temp.txt",
-      row.names = F,
-      col.names = F,
-      append = T,
-      quote = F,
-      sep = "\n"
-    )
-    write.table(
-      VC$sigmasq_e,
-      "Ve_temp.txt",
-      row.names = F,
-      col.names = F,
-      append = T,
-      quote = F,
-      sep = "\n"
-    )
+    c(VC$sigmasq_g, VC$sigmasq_e)
   }
-  sapply(seq_len(dim(Y)[2]), lmmlite_func)
+  vc <- as.matrix(apply(Y, 2, lmmlite_func))
   
-  VCbind = cbind(vg=as.matrix(read.table("Vg_temp.txt")), ve=as.matrix(read.table("Ve_temp.txt")))
-  file.remove("Vg_temp.txt")
-  file.remove("Ve_temp.txt")
-  write.table(VCbind, "VC.txt", row.names = F, col.names = F, quote = F)
-  vc = as.matrix(read.table("VC.txt"))
+  # VCbind = cbind(vg=as.matrix(read.table("Vg_temp.txt")), ve=as.matrix(read.table("Ve_temp.txt")))
+  # file.remove("Vg_temp.txt")
+  # file.remove("Ve_temp.txt")
+  # write.table(VCbind, "VC.txt", row.names = F, col.names = F, quote = F)
+  # vc = as.matrix(read.table("VC.txt"))
 
   print(proc.time() - ptm)
   return(vc)
