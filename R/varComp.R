@@ -22,45 +22,14 @@
 
 varComp <- function(K, Y, X){
   ptm <- proc.time()
-  # K_origin = K
-  
-  # for (i in 1:dim(Y)[2]) {
-  #   K = K_origin
-  #   print(i)
-  #   
-  #   e = lmmlite::eigen_rotation(K, t(Y)[i,], use_cpp = T)
-  #   VC = lmmlite::fitLMM(
-  #     e$Kva,
-  #     e$y,
-  #     e$X,
-  #     reml = T,
-  #     use_cpp = T,
-  #     tol = 1e-6,
-  #     check_boundary = T
-  #   )
-  #   
-    # write.table(
-    #   VC$sigmasq_g,
-    #   "Vg_temp.txt",
-    #   row.names = F,
-    #   col.names = F,
-    #   append = T,
-    #   quote = F,
-    #   sep = "\n"
-    # )
-    # write.table(
-    #   VC$sigmasq_e,
-    #   "Ve_temp.txt",
-    #   row.names = F,
-    #   col.names = F,
-    #   append = T,
-    #   quote = F,
-    #   sep = "\n"
-    # )
-  # }
-  lmmlite_func <- function(x){
-    e <- lmmlite::eigen_rotation(K, x, use_cpp = T)
-    VC <- lmmlite::fitLMM(
+  K_origin = K
+
+  for (i in 1:dim(Y)[2]) {
+    K = K_origin
+    print(i)
+
+    e = lmmlite::eigen_rotation(K, t(Y)[i,], use_cpp = T)
+    VC = lmmlite::fitLMM(
       e$Kva,
       e$y,
       e$X,
@@ -69,15 +38,47 @@ varComp <- function(K, Y, X){
       tol = 1e-6,
       check_boundary = T
     )
-    c(VC$sigmasq_g, VC$sigmasq_e)
+
+    write.table(
+      VC$sigmasq_g,
+      "Vg_temp.txt",
+      row.names = F,
+      col.names = F,
+      append = T,
+      quote = F,
+      sep = "\n"
+    )
+    write.table(
+      VC$sigmasq_e,
+      "Ve_temp.txt",
+      row.names = F,
+      col.names = F,
+      append = T,
+      quote = F,
+      sep = "\n"
+    )
   }
-  vc <- as.matrix(apply(Y, 2, lmmlite_func))
+  # lmmlite_func <- function(x){
+  #   e <- lmmlite::eigen_rotation(K, x, use_cpp = T)
+  #   VC <- lmmlite::fitLMM(
+  #     e$Kva,
+  #     e$y,
+  #     e$X,
+  #     reml = T,
+  #     use_cpp = T,
+  #     tol = 1e-6,
+  #     check_boundary = T
+  #   )
+  #   c(VC$sigmasq_g, VC$sigmasq_e)
+  # }
+  # vc <- as.matrix(apply(Y, 2, lmmlite_func))
+  # write.table(vc, "VC.txt", row.names = F, col.names = F, quote = F)
   
-  # VCbind = cbind(vg=as.matrix(read.table("Vg_temp.txt")), ve=as.matrix(read.table("Ve_temp.txt")))
-  # file.remove("Vg_temp.txt")
-  # file.remove("Ve_temp.txt")
-  # write.table(VCbind, "VC.txt", row.names = F, col.names = F, quote = F)
-  # vc = as.matrix(read.table("VC.txt"))
+  VCbind = cbind(vg=as.matrix(read.table("Vg_temp.txt")), ve=as.matrix(read.table("Ve_temp.txt")))
+  file.remove("Vg_temp.txt")
+  file.remove("Ve_temp.txt")
+  write.table(VCbind, "VC.txt", row.names = F, col.names = F, quote = F)
+  vc = as.matrix(read.table("VC.txt"))
 
   print(proc.time() - ptm)
   return(vc)
