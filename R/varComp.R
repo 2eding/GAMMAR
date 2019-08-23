@@ -58,21 +58,6 @@ varComp <- function(K, Y, X){
       sep = "\n"
     )
   }
-  # lmmlite_func <- function(x){
-  #   e <- lmmlite::eigen_rotation(K, x, use_cpp = T)
-  #   VC <- lmmlite::fitLMM(
-  #     e$Kva,
-  #     e$y,
-  #     e$X,
-  #     reml = T,
-  #     use_cpp = T,
-  #     tol = 1e-6,
-  #     check_boundary = T
-  #   )
-  #   c(VC$sigmasq_g, VC$sigmasq_e)
-  # }
-  # vc <- as.matrix(apply(Y, 2, lmmlite_func))
-  # write.table(vc, "VC.txt", row.names = F, col.names = F, quote = F)
   
   VCbind = cbind(vg=as.matrix(read.table("Vg_temp.txt")), ve=as.matrix(read.table("Ve_temp.txt")))
   file.remove("Vg_temp.txt")

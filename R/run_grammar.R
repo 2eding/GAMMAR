@@ -76,7 +76,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
     '%dopar%' <- foreach::"%dopar%"
     
     
-    foreach::foreach(i=1:Ng, .combine = 'rbind', .verbose = T) %dopar% {
+    foreach::foreach(i=1:Ng, .combine = 'rbind', .verbose = T, ) %dopar% {
       pval[i] <- esgamma(newY, X[, i], max_itr)
       pv <- pval[i]
       fval[i] <- getF(newY, X[, i], 1)
@@ -84,7 +84,6 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
       
       saveresult <- c(i, "\t", pv, "\t", fv, "\n")
       cat(saveresult, file=paste(outPath, "/result.txt", sep = ""), append=T)
-      # cat("\n", file=paste(outPath, "/result.txt", sep = ""), sep = "", append=T)
     }
     
     tempread <- as.matrix(read.table(paste(outPath, "/result.txt", sep = "")))
