@@ -39,7 +39,6 @@
 #'    
 #' @export
 run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
-  log_con <- file(paste(outPath,"/GRAMMAR.log", sep = ""), open = "a")
   ptm <- proc.time()
   
   run_gamma <- function(Y, X, max_itr, num.parallel, outPath) {
@@ -86,8 +85,6 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
       
       cat(i, "\t", pv, "\t", fv, file=paste(outPath, "/result.txt", sep = ""), append = T, sep = "\n")
       # cat("\n", file=paste(outPath, "/result.txt", sep = ""), sep = "", append=T)
-      
-      cat(i, "th loop completed", file = log_con, sep = "\n")
     }
     
     tempread <- as.matrix(read.table(paste(outPath, "/result.txt", sep = "")))
@@ -129,6 +126,5 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
   
   run_gamma(UY, UX, max_itr, num.parallel, outPath)
 
-  close(log_con)
   print(proc.time() - ptm)
 }
