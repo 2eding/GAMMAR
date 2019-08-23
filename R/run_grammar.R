@@ -82,8 +82,8 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
       fval[i] <- getF(newY, X[, i], 1)
       fv <- fval[i]
       
-      cat(i, "\t", pv, "\t", fv, file=paste(outPath, "/result.txt", sep = ""), append = T, sep = "\n")
-      # cat("\n", file=paste(outPath, "/result.txt", sep = ""), sep = "", append=T)
+      cat(i, "\t", pv, "\t", fv, file=paste(outPath, "/result.txt", sep = ""))
+      cat("\n", file=paste(outPath, "/result.txt", sep = ""), sep = "", append=T)
     }
     
     tempread <- as.matrix(read.table(paste(outPath, "/result.txt", sep = "")))
