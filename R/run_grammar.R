@@ -77,7 +77,6 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
     
     
     foreach::foreach(i=1:Ng, .combine = 'rbind', .verbose = T) %dopar% {
-      cat("loop begins", file = log_con, sep = "\n")
       pval[i] <- esgamma(newY, X[, i], max_itr)
       pv <- pval[i]
       fval[i] <- getF(newY, X[, i], 1)
