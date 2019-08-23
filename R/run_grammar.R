@@ -82,10 +82,8 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
       fval[i] <- getF(newY, X[, i], 1)
       fv <- fval[i]
       
-      savefile <- file(paste(outPath, "/result.txt"))
-      writeLines(i, "\t", pv, "\t", fv, savefile)
-      close(savefile)
-      # cat(i, "\t", pv, "\t", fv, "\n", file=paste(outPath, "/result.txt", sep = ""))
+      saveresult <- c(i, "\t", pv, "\t", fv, "\n")
+      cat(saveresult, file=paste(outPath, "/result.txt", sep = ""), append=T)
       # cat("\n", file=paste(outPath, "/result.txt", sep = ""), sep = "", append=T)
     }
     
