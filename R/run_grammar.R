@@ -27,6 +27,10 @@
 #' @importFrom vegan adonis
 #' @importFrom utils read.table
 #' @importFrom utils write.table
+#' @importFrom parallel makeCluster
+#' @importFrom parallel stopCluster
+#' @importFrom doParallel registerDoParallel
+#' @importFrom foreach foreach
 #' 
 #' @examples 
 #'    X <- as.matrix(data.table::fread(Genotypesdata))
