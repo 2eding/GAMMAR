@@ -15,9 +15,34 @@
 
 Kinship <- function(X){
   ptm <- proc.time()
-  X_norm = (X - mean(X, na.rm = T) / sd(X, na.rm = T)) # normalize
-  kin = cor(X_norm)
-  write.table(kin, "K.txt", row.names = F, col.names = F, quote = F)
-  print(proc.time() - ptm)
+
+  varjj <- function(data){
+    return(sum((mean(data) - data)^2)/length(data))
+  }
+  
+  W <- t(X)
+  n <- nrow(W)
+  m <- ncol(W)
+  keep <- c()
+  
+  # i=1
+  for (i in 1:m){
+    mn <- mean(W[!is.na(W[,i]),i])
+    W[is.na(W[,i]),i] <- mn
+    vr <- varjj(W[,i])
+    
+    if (vr == 0) s <- 1.0
+    else s <- sqrt(vr)
+    
+    keep <- c(keep,i)
+    W[,i] <- (W[,i] - mn) / s
+  }
+  W <- W[, keep]
+  # K <- (W %*% t(W)) * 1.0/m
+  K <- tcrossprod(W) * 1.0/m
+  
+  return(K)
+  
+  
   return (kin)
 }
