@@ -10,6 +10,6 @@ library(GRAMMAR)<br><br>
 X = as.matrix(fread("X_rightdim.txt"))<br>
 Y = as.matrix(fread("Y_rightdim.txt"))<br><br>
 
-K = Kinship(t(X))<br>
-VC = varComp(K, Y, X)<br>
+K = Kinship(X)<br>
+VC = varComp(Y, K, num.parallel)<br>
 run = run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 4, outPath = "./")
