@@ -130,5 +130,5 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
   grammar_result <- run_gamma(UY, UX, max_itr, num.parallel, outPath)
 
   print(proc.time() - ptm)
-  return(ggrammar_result)
+  return(grammar_result)
 }
