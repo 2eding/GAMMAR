@@ -28,11 +28,11 @@ p-value and f-value
 run_grammar function calculates p-value and f-value.
 }
 \examples{
-   X = as.matrix(read.table(Genotypesdata))
-   Y = as.matrix(read.table(Phenotypesdata))
+   X <- as.matrix(data.table::fread(Genotypesdata))
+   Y <- as.matrix(data.table::fread(Phenotypesdata))
    
-   K = Kinship(t(X))
-   VC = varComp(K, Y, X)
+   K <- Kinship(X)
+   VC <- varComp(Y, K, num.parallel)
    
    result = run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 2, outPath = "./")
    

@@ -29,11 +29,11 @@
 #' @importFrom utils write.table
 #' 
 #' @examples 
-#'    X = as.matrix(read.table(Genotypesdata))
-#'    Y = as.matrix(read.table(Phenotypesdata))
+#'    X <- as.matrix(data.table::fread(Genotypesdata))
+#'    Y <- as.matrix(data.table::fread(Phenotypesdata))
 #'    
-#'    K = Kinship(t(X))
-#'    VC = varComp(K, Y, X)
+#'    K <- Kinship(X)
+#'    VC <- varComp(Y, K, num.parallel)
 #'    
 #'    result = run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 2, outPath = "./")
 #'    
@@ -123,7 +123,8 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
   UY <- rotate(Y,sigma)		# Rotate genotypes and phenotypes
   UX <- rotate(X,sigma)
   
-  run_gamma(UY, UX, max_itr, num.parallel, outPath)
+  grammar_result <- run_gamma(UY, UX, max_itr, num.parallel, outPath)
 
   print(proc.time() - ptm)
+  return(ggrammar_result)
 }
