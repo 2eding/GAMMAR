@@ -12,11 +12,11 @@ LazyData: true
 RoxygenNote: 6.1.1
 Depend: R ( >= 3.5.0)
 Imports: 
-    lmmlite,
+    pbmcapply,
+    regress,
     vegan,
     snow,
     parallel,
     doParallel,
     foreach,
     data.table
-Remotes: kbroman/lmmlite
