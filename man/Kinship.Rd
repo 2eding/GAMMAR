@@ -9,6 +9,9 @@ Kinship(X)
 \arguments{
 \item{X}{is the SNP matrix, individual x SNPs}
 }
+\value{
+kinship coefficient
+}
 \description{
 Kinship function will estimate kinship coefficient
 }

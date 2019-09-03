@@ -4,6 +4,8 @@
 #' 
 #' @param X is the SNP matrix, individual x SNPs
 #' 
+#' @return kinship coefficient
+#' 
 #' @examples
 #'    X <- as.matrix(data.table::fread(Genotypesdata))
 #'    K <- Kinship(X)
