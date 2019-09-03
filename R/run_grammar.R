@@ -25,8 +25,6 @@
 #' @return p-value and f-value
 #' 
 #' @importFrom vegan adonis
-#' @importFrom utils read.table
-#' @importFrom utils write.table
 #' @importFrom parallel makeCluster
 #' @importFrom parallel stopCluster
 #' @importFrom doParallel registerDoParallel
