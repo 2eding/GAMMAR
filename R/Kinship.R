@@ -40,7 +40,7 @@ Kinship <- function(X){
   W <- W[, keep]
   # K <- (W %*% t(W)) * 1.0/m
   K <- tcrossprod(W) * 1.0/m
-  write.table(K, "K.txt", row.names = F, col.names = F, quote = F)
+  write.table(K, "./K.txt", row.names = F, col.names = F, quote = F)
   print(proc.time() - ptm)
   return(K)
 }
