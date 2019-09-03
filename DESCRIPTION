@@ -18,5 +18,4 @@ Imports:
     snow,
     parallel,
     doParallel,
-    foreach,
-    data.table
+    foreach

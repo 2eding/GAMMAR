@@ -97,6 +97,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
     
     parallel::stopCluster(cl)
     
+    return(towrite)
   }
   
   chol_solve <- function(K) {
