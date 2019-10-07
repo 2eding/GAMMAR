@@ -36,9 +36,9 @@
 #'    Y <- as.matrix(data.table::fread(Phenotypesdata))
 #'    
 #'    K <- Kinship(X)
-#'    VC <- varComp(Y, K, num.parallel)
+#'    VC <- varComp(K, Y, X)
 #'    
-#'    result = run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 2, outPath = "./testdir/", name = "result.txt")
+#'    result <- run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 2, outPath = "./testdir/", name = "result.txt")
 #'    
 #' @export
 run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, name) {
