@@ -12,11 +12,11 @@
 #' @importFrom lmmlite fitLMM
 #' 
 #' @examples 
-#'    X = as.matrix(read.table(Genotypesdata))
-#'    Y = as.matrix(read.table(Phenotypesdata))
-#'    K = Kinship(X)
+#'    X <- as.matrix(read.table(SNPData))
+#'    Y <- as.matrix(read.table(GeneExpressionData))
+#'    K <- Kinship(X)
 #'    
-#'    VC = varComp(K, Y, X)
+#'    VC <- varComp(K, Y, X)
 #' @export
 
 

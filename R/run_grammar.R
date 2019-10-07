@@ -32,8 +32,8 @@
 #' @importFrom foreach foreach
 #' 
 #' @examples 
-#'    X <- as.matrix(data.table::fread(Genotypesdata))
-#'    Y <- as.matrix(data.table::fread(Phenotypesdata))
+#'    X <- as.matrix(data.table::fread(SNPData))
+#'    Y <- as.matrix(data.table::fread(GeneExpressionData))
 #'    
 #'    K <- Kinship(X)
 #'    VC <- varComp(K, Y, X)
