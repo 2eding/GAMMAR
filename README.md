@@ -12,7 +12,8 @@ library(GRAMMAR)<br><br>
 X = as.matrix(data.table::fread("X_rightdim.txt"))<br>
 Y = as.matrix(data.table::fread("Y_rightdim.txt"))<br>
 * data.table::fread <= This package is useful for input large data<br>
-* input file matrix type is sample(individual) by snp expression or gene expression
+* X_rightdim.txt is snp data
+* Y_rightdim.txt is gene expression data
 <br><br>
 ### Step 3. Calculate the kinship
 K = Kinship(X)<br><br>
