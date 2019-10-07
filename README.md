@@ -17,7 +17,7 @@ Y = as.matrix(data.table::fread("Y_rightdim.txt"))<br><br>
 K = Kinship(X)<br>
 
 ### Step 4. Calculate the variance components
-VC = varComp(Y, K, num.parallel)<br>
+VC = varComp(K, Y, X)<br>
 
 ### Step 5. Run GRAMMAR
-run = run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 4, outPath = "./")
+run = run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 4, outPath = "./test/", name = "result.txt")
