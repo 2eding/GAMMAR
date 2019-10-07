@@ -1,7 +1,7 @@
 # GRAMMAR
 Generalized Renown Analysis of Molecular variance for Mixed model Analysis R package
 
-# usage
+# Usage
 
 ### Step 1. Install and load the package
 library(devtools)<br>
