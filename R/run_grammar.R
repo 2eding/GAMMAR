@@ -20,7 +20,8 @@
 #' @param VC is obtained from the varComp function
 #' @param max_itr is specifies the number of permutations.
 #' @param num.parallel Number of parallel processes or a predefined socket cluster
-#' @param outPath is the file output path 
+#' @param outPath is a parameter that specifies the path of the result file
+#' @param name is a parameter that specifies the name of the result file
 #' 
 #' @return p-value and f-value
 #' 
@@ -37,13 +38,13 @@
 #'    K <- Kinship(X)
 #'    VC <- varComp(Y, K, num.parallel)
 #'    
-#'    result = run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 2, outPath = "./")
+#'    result = run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 2, outPath = "./testdir/", name = "result.txt")
 #'    
 #' @export
-run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
+run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, name) {
   ptm <- proc.time()
   
-  run_gamma <- function(Y, X, max_itr, num.parallel, outPath) {
+  run_gamma <- function(Y, X, max_itr, num.parallel, outPath, name) {
     Ng <- dim(X)[2]
     pval <- 1:Ng
     fval <- 1:Ng
@@ -85,13 +86,14 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
       fv <- fval[i]
       
       saveresult <- c(i, "\t", pv, "\t", fv, "\n")
-      cat(saveresult, file=paste(outPath, "/result.txt", sep = ""), append=T)
+      Sys.sleep(0.0001)
+      cat(saveresult, file=paste(outPath, "/", name, sep = ""), append=T)
     }
     
-    tempread <- as.matrix(read.table(paste(outPath, "/result.txt", sep = "")))
-    file.remove(paste(outPath, "/result.txt", sep = ""))
+    tempread <- as.matrix(read.table(paste(outPath, "/", name, sep = "")))
+    file.remove(paste(outPath, "/", name, sep = ""))
     towrite <- tempread[order(tempread[,1]),]
-    write.table(towrite, paste(outPath, "/result.txt", sep = ""), row.names = F, col.names = c("SNP_Num\t", "P_value\t", "F_value"), quote = F)
+    write.table(towrite, paste(outPath, "/", name, sep = ""), row.names = F, col.names = c("SNP_Num\t", "P_value\t", "F_value"), quote = F)
     
     parallel::stopCluster(cl)
     
@@ -126,7 +128,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath) {
   UY <- rotate(Y,sigma)		# Rotate genotypes and phenotypes
   UX <- rotate(X,sigma)
   
-  grammar_result <- run_gamma(UY, UX, max_itr, num.parallel, outPath)
+  grammar_result <- run_gamma(UY, UX, max_itr, num.parallel, outPath, name)
 
   print(proc.time() - ptm)
   return(grammar_result)
