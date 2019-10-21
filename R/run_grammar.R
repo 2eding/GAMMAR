@@ -86,7 +86,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, name) {
       fv <- fval[i]
       
       saveresult <- c(i, "\t", pv, "\t", fv, "\n")
-      Sys.sleep(0.01)
+      Sys.sleep(0.1)
       cat(saveresult, file=paste(outPath, "/", name, sep = ""), append=T)
     }
     
