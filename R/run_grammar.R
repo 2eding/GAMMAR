@@ -90,7 +90,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, name) {
       # cat(saveresult, file=paste(outPath, "/", name, sep = ""), append=T)
       
       ####
-      write.table(saveresult, paste(outPath, "tempResult_", i, sep = ""), row.names = F, col.names = F)
+      write.table(saveresult, paste(outPath, "tempResult_", i, sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
     
       gc()
       
@@ -106,9 +106,9 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, name) {
     tempfiles_cnt <- length(tempfiles)
     
     for(i in 1:tempfiles_cnt){
-      tempResult <- paste(read.table(outPath, "/", tempfile[i], sep = "\t"))
+      tempResult <- paste(read.table(outPath, "/", tempfile[i], sep = "\t", quote = F))
       
-      write.table(tempResult, paste(outPath, "/", name, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F)
+      write.table(tempResult, paste(outPath, "/", name, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)
     }
     
     headers <- c("SNP_Num\t", "P_values\t", "F_values")
