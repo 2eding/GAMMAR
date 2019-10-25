@@ -86,18 +86,39 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, name) {
       fv <- fval[i]
       
       saveresult <- c(i, "\t", pv, "\t", fv, "\n")
-      Sys.sleep(0.1)
-      cat(saveresult, file=paste(outPath, "/", name, sep = ""), append=T)
+      # Sys.sleep(0.1)
+      # cat(saveresult, file=paste(outPath, "/", name, sep = ""), append=T)
+      
+      ####
+      write.table(saveresult, paste(outPath, "tempResult_", i, sep = ""), row.names = F, col.names = F)
+    
+      gc()
+      
+      ####
     }
     
-    tempread <- as.matrix(read.table(paste(outPath, "/", name, sep = "")))
-    file.remove(paste(outPath, "/", name, sep = ""))
-    towrite <- tempread[order(tempread[,1]),]
-    write.table(towrite, paste(outPath, "/", name, sep = ""), row.names = F, col.names = c("SNP_Num\t", "P_value\t", "F_value"), quote = F)
+    # tempread <- as.matrix(read.table(paste(outPath, "/", name, sep = "")))
+    # file.remove(paste(outPath, "/", name, sep = ""))
+    # towrite <- tempread[order(tempread[,1]),]
+    # write.table(towrite, paste(outPath, "/", name, sep = ""), row.names = F, col.names = c("SNP_Num\t", "P_value\t", "F_value"), quote = F)
+    
+    tempfiles <- list.files(outPath)
+    tempfiles_cnt <- length(tempfiles)
+    
+    for(i in 1:tempfiles_cnt){
+      tempResult <- paste(read.table(outPath, "/", tempfile[i], sep = "\t"))
+      
+      write.table(tempResult, paste(outPath, "/", name, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F)
+    }
+    
+    headers <- c("SNP_Num\t", "P_values\t", "F_values")
+    Result <- read.table(paste(outPath, name), row.names = F, col.names = headers, sep = "", quote = F)
+    
+    
     
     parallel::stopCluster(cl)
     
-    return(towrite)
+    return(Result)
   }
   
   chol_solve <- function(K) {
