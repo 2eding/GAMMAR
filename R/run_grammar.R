@@ -97,12 +97,12 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     src_files_cnt <- length(src_files)
     
     for(i in 1:src_files_cnt){
-      tempResult <- as.matrix(read.table(paste(src_dir, src_files[i], sep = ""),))
+      tempResult <- as.matrix(read.table(paste(src_dir, src_files[i], sep = "")))
       write.table(tempResult, paste(outPath, outname, sep = ""), sep = "\t", row.names = F, col.names = F, quote = F, append = T)  
     }
     
     tempread <- as.matrix(read.table(paste(outPath, outname, sep = ""), sep = "\t"))
-    towrite <- tempread[order(tempread[,1]),]
+    towrite <- as.matrix(tempread[order(tempread[,1]),], sep = "\t")
     resultHeader <- c("SNP_Num\t", "P_value\t", "F_value")
     write.table(towrite, paste(outPath, "/", outname, sep = ""), row.names = F, col.names = resultHeader, quote = F)
 
