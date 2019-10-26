@@ -115,7 +115,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     
     # tempread <- as.matrix(read.table(paste(outPath, outname, sep = "")))
     tempread <- as.matrix(read.table(paste(outPath, outname, sep = "")))
-    cat(tempread)
+    dim(tempread)
     # towrite <- tempread[order(tempread[,1]),]
     # towrite <- tempread[order(tempread[,1]),]
     # resultHeader <- c("SNP_Num\t", "P_value\t", "F_value")
