@@ -86,7 +86,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
       fv <- fval[i]
       
       # saveresult <- c(i, "\t", pv, "\t", fv, "\n")
-      saveresult <- c(i, "\t", pv, "\t", fv)
+      saveresult <- c(i,"\t",pv,"\t",fv)
       # Sys.sleep(0.1)
       # cat(saveresult, file=paste(outPath, "/", name, sep = ""), append=T)
       
@@ -109,12 +109,16 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     src_files_cnt <- length(src_files)
     
     for(i in 1:src_files_cnt){
-      tempResult <- paste(read.table(outPath, "/", src_files[i]))
-      write.table(tempResult, paste(outPath, "/", outname, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)
+      tempResult <- read.table(paste(outPath, "/", src_files[i]))
+      if(i==1){
+        write.table(tempResult, paste(outPath, "/", outname, sep = ""), row.names = F, col.names = c("SNP_Num\t", "P_values\t", "F_values"), sep = "\n", quote = F, append = T)
+      }
+      else{
+        write.table(tempResult, paste(outPath, "/", outname, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)  
+      }
     }
     
-    headers <- c("SNP_Num\t", "P_values\t", "F_values")
-    Result <- read.table(paste(outPath, outname), row.names = F, col.names = headers, sep = "", quote = F)
+    Result <- read.table(paste(outPath, outname))
     
     
     
