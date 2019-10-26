@@ -110,7 +110,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     
     for(i in 1:src_files_cnt){
       tempResult <- as.matrix(read.table(paste(src_dir, src_files[i], sep = "")))
-      write.table(t(tempResult), paste(outPath, outname, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)  
+      write.table(tempResult, paste(outPath, outname, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)  
     }
     
     tempread <- as.matrix(read.table(paste(outPath, outname, sep = "")))
@@ -120,7 +120,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     write.table(towrite, paste(outPath, "/", outname, sep = ""), row.names = F, col.names = resultHeader, quote = F)
     
     for(i in 1:src_files_cnt){
-      file.remove(src_files)  
+      file.remove(src_files[i])  
     }
     
     
