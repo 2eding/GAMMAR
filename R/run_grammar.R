@@ -109,12 +109,12 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     src_files_cnt <- length(src_files)
     
     for(i in 1:src_files_cnt){
-      tempResult <- read.table(paste(src_dir, "/", src_files[i], sep = ""))
+      tempResult <- read.table(paste(src_dir, src_files[i], sep = ""))
       if(i==1){
-        write.table(tempResult, paste(outPath, "/", outname, sep = ""), row.names = F, col.names = c("SNP_Num\t", "P_values\t", "F_values"), sep = "\n", quote = F, append = T)
+        write.table(tempResult, paste(outPath, outname, sep = ""), row.names = F, col.names = c("SNP_Num\t", "P_values\t", "F_values"), sep = "\n", quote = F, append = T)
       }
       else{
-        write.table(tempResult, paste(outPath, "/", outname, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)  
+        write.table(tempResult, paste(outPath, outname, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)  
       }
     }
     
@@ -155,7 +155,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
   UY <- rotate(Y,sigma)		# Rotate genotypes and phenotypes
   UX <- rotate(X,sigma)
   
-  grammar_result <- run_gamma(UY, UX, max_itr, num.parallel, outPath, name)
+  grammar_result <- run_gamma(UY, UX, max_itr, num.parallel, outPath, outname)
 
   print(proc.time() - ptm)
   return(grammar_result)
