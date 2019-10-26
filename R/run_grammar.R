@@ -21,7 +21,7 @@
 #' @param max_itr is specifies the number of permutations.
 #' @param num.parallel Number of parallel processes or a predefined socket cluster
 #' @param outPath is a parameter that specifies the path of the result file
-#' @param outname is a parameter that specifies the name of the result file
+#' @param outName is a parameter that specifies the name of the result file
 #' 
 #' @return p-value and f-value
 #' 
@@ -38,13 +38,13 @@
 #'    K <- Kinship(X)
 #'    VC <- varComp(K, Y, X)
 #'    
-#'    result <- run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 2, outPath = "./testdir/", outname = "result.txt")
+#'    result <- run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 2, outPath = "./testdir/", outName = "result.txt")
 #'    
 #' @export
-run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
+run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outName) {
   ptm <- proc.time()
   
-  run_gamma <- function(Y, X, max_itr, num.parallel, outPath, outname) {
+  run_gamma <- function(Y, X, max_itr, num.parallel, outPath, outName) {
     Ng <- dim(X)[2]
     pval <- 1:Ng
     fval <- 1:Ng
@@ -98,14 +98,15 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     
     for(i in 1:src_files_cnt){
       tempResult <- as.matrix(read.table(paste(src_dir, src_files[i], sep = "")))
-      write.table(tempResult, paste(outPath, outname, sep = ""), sep = "\t", row.names = F, col.names = F, quote = F, append = T)  
+      write.table(tempResult, paste(outPath, outName, sep = ""), row.names = F, col.names = F, quote = F, append = T)  
     }
     
-    tempread <- as.matrix(read.table(paste(outPath, outname, sep = ""), sep = "\t"))
-    towrite <- as.matrix(tempread[order(tempread[,1]),], sep = "\t")
     resultHeader <- c("SNP_Num\t", "P_value\t", "F_value")
-    write.table(towrite, paste(outPath, "/", outname, sep = ""), row.names = F, col.names = resultHeader, quote = F)
-
+    
+    tempread <- as.matrix(read.table(paste(outPath, outName, sep = "")))
+    towrite <- tempread[order(tempread[,1]),]
+    write.table(towrite, paste(outPath, "/", outName, sep = ""), row.names = F, col.names = resultHeader, quote = F)
+    
     for(i in 1:src_files_cnt){
       file.remove(src_files[i])
     }
@@ -141,7 +142,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
   UY <- rotate(Y,sigma)		# Rotate genotypes and phenotypes
   UX <- rotate(X,sigma)
   
-  grammar_result <- run_gamma(UY, UX, max_itr, num.parallel, outPath, outname)
+  grammar_result <- run_gamma(UY, UX, max_itr, num.parallel, outPath, outName)
 
   print(proc.time() - ptm)
   return(grammar_result)
