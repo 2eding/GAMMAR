@@ -116,11 +116,12 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     tempread <- as.matrix(read.table(paste(outPath, outname, sep = "")))
     towrite <- tempread[order(tempread[,1]),]
     towrite <- tempread[order(tempread[,1]),]
-    write.table(towrite, paste(outPath, "/", name, sep = ""), row.names = F, col.names = c("SNP_Num\t", "P_value\t", "F_value"), quote = F)
+    resultHeader <- c("SNP_Num\t", "P_value\t", "F_value")
+    write.table(towrite, paste(outPath, "/", name, sep = ""), row.names = F, col.names = resultHeader, quote = F)
     
     parallel::stopCluster(cl)
     
-    return(Result)
+    return(towrite)
   }
   
   chol_solve <- function(K) {
