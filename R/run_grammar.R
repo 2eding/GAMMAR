@@ -109,12 +109,12 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     src_files_cnt <- length(src_files)
     
     for(i in 1:src_files_cnt){
-      tempResult <- read.table(paste(outPath, "/", src_files[i]))
+      tempResult <- read.table(paste(src_dir, src_files[i]))
       if(i==1){
-        write.table(tempResult, paste(outPath, "/", outname, sep = ""), row.names = F, col.names = c("SNP_Num\t", "P_values\t", "F_values"), sep = "\n", quote = F, append = T)
+        write.table(tempResult, paste(outPath, outname, sep = ""), row.names = F, col.names = c("SNP_Num\t", "P_values\t", "F_values"), sep = "\n", quote = F, append = T)
       }
       else{
-        write.table(tempResult, paste(outPath, "/", outname, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)  
+        write.table(tempResult, paste(outPath, outname, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)  
       }
     }
     
