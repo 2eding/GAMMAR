@@ -21,7 +21,7 @@
 #' @param max_itr is specifies the number of permutations.
 #' @param num.parallel Number of parallel processes or a predefined socket cluster
 #' @param outPath is a parameter that specifies the path of the result file
-#' @param name is a parameter that specifies the name of the result file
+#' @param outname is a parameter that specifies the name of the result file
 #' 
 #' @return p-value and f-value
 #' 
@@ -38,13 +38,13 @@
 #'    K <- Kinship(X)
 #'    VC <- varComp(K, Y, X)
 #'    
-#'    result <- run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 2, outPath = "./testdir/", name = "result.txt")
+#'    result <- run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 2, outPath = "./testdir/", outname = "result.txt")
 #'    
 #' @export
-run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, name) {
+run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
   ptm <- proc.time()
   
-  run_gamma <- function(Y, X, max_itr, num.parallel, outPath, name) {
+  run_gamma <- function(Y, X, max_itr, num.parallel, outPath, outname) {
     Ng <- dim(X)[2]
     pval <- 1:Ng
     fval <- 1:Ng
@@ -105,16 +105,16 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, name) {
     # write.table(towrite, paste(outPath, "/", name, sep = ""), row.names = F, col.names = c("SNP_Num\t", "P_value\t", "F_value"), quote = F)
     
     src_dir <- c(outPath)
-    src_files <- list.files(path = src_dir, pattern = "tempResult_*")
+    src_files <- list.files(path = c(src_dir,"/"), pattern = "tempResult_*")
     src_files_cnt <- length(src_files)
     
     for(i in 1:src_files_cnt){
       tempResult <- paste(read.table(outPath, "/", src_files[i]))
-      write.table(tempResult, paste(outPath, "/", name, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)
+      write.table(tempResult, paste(outPath, "/", outname, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)
     }
     
     headers <- c("SNP_Num\t", "P_values\t", "F_values")
-    Result <- read.table(paste(outPath, name), row.names = F, col.names = headers, sep = "", quote = F)
+    Result <- read.table(paste(outPath, outname), row.names = F, col.names = headers, sep = "", quote = F)
     
     
     
