@@ -98,6 +98,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
       
       ####
     }
+    parallel::stopCluster(cl)
     
     # tempread <- as.matrix(read.table(paste(outPath, "/", name, sep = "")))
     # file.remove(paste(outPath, "/", name, sep = ""))
@@ -111,7 +112,8 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     for(i in 1:src_files_cnt){
       tempResult <- as.matrix(read.table(paste(src_dir, src_files[i], sep = ""),))
       cat(dim(tempResult))
-      write.table(tempResult, paste(outPath, outname, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)  
+      tt <- write.table(tempResult, paste(outPath, outname, sep = ""), row.names = F, col.names = F, quote = F, append = T)  
+      cat(dim(as.matrix(tt)))
     }
     
     # tempread <- as.matrix(read.table(paste(outPath, outname, sep = "")))
@@ -125,9 +127,6 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     for(i in 1:src_files_cnt){
       file.remove(src_files[i])
     }
-    
-    
-    parallel::stopCluster(cl)
     
     # return(towrite)
   }
