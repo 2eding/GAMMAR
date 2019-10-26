@@ -110,7 +110,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     
     for(i in 1:src_files_cnt){
       tempResult <- as.matrix(read.table(paste(src_dir, src_files[i], sep = ""),))
-      write.table(tempResult, paste(outPath, outname, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)  
+      write.table(t(c(tempResult[1,1], tempResult[2,1], tempResult[3,1])), paste(outPath, outname, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)  
     }
     
     # tempread <- as.matrix(read.table(paste(outPath, outname, sep = "")))
@@ -126,7 +126,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     
     parallel::stopCluster(cl)
     
-    return(towrite)
+    # return(towrite)
   }
   
   chol_solve <- function(K) {
