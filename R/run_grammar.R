@@ -90,7 +90,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, name) {
       # cat(saveresult, file=paste(outPath, "/", name, sep = ""), append=T)
       
       ####
-      write.table(saveresult, paste(outPath, "tempResult_", i, sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
+      write.table(saveresult, paste(outPath, "tempResult_", i, sep = ""), row.names = F, col.names = F, quote = F)
     
       gc()
       
