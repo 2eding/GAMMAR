@@ -86,13 +86,14 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, name) {
       fv <- fval[i]
       
       # saveresult <- c(i, "\t", pv, "\t", fv, "\n")
-      saveresult <- c(i, "\t", pv, "\t", fv)
+      # saveresult <- c(i, "\t", pv, "\t", fv)
       # Sys.sleep(0.1)
       # cat(saveresult, file=paste(outPath, "/", name, sep = ""), append=T)
       
       ####
-      write.table(saveresult, paste(outPath, "tempResult_", i, sep = ""), row.names = F, col.names = F, quote = F)
+      # write.table(saveresult, paste(outPath, "tempResult_", i, sep = ""), row.names = F, col.names = F, quote = F)
     
+      cat(saveresult, file = paste(outPath, "tempResult_", i, sep = ""))
       gc()
       
       ####
@@ -108,8 +109,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, name) {
     src_files_cnt <- length(src_files)
     
     for(i in 1:src_files_cnt){
-      tempResult <- paste(read.table(outPath, "/", src_files[i], sep = "\t", quote = F))
-      
+      tempResult <- paste(read.table(outPath, "/", src_files[i]))
       write.table(tempResult, paste(outPath, "/", name, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)
     }
     
