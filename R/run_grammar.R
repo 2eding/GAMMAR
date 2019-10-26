@@ -109,7 +109,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     src_files_cnt <- length(src_files)
     
     for(i in 1:src_files_cnt){
-      tempResult <- as.matrix(read.table(paste(src_dir, src_files[i], sep = "")))
+      tempResult <- as.matrix(read.table(paste(src_dir, src_files[i], sep = "")), nrow=1)
       write.table(tempResult, paste(outPath, outname, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)  
     }
     
