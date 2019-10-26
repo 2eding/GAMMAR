@@ -105,7 +105,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, name) {
     # write.table(towrite, paste(outPath, "/", name, sep = ""), row.names = F, col.names = c("SNP_Num\t", "P_value\t", "F_value"), quote = F)
     
     src_dir <- c(outPath)
-    src_files <- list.files(path = src_dir, pattern = "tempResult_*.txt")
+    src_files <- list.files(path = src_dir, pattern = "tempResult_*")
     src_files_cnt <- length(src_files)
     
     for(i in 1:src_files_cnt){
