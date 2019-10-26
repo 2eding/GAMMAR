@@ -110,6 +110,7 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     
     for(i in 1:src_files_cnt){
       tempResult <- as.matrix(read.table(paste(src_dir, src_files[i], sep = ""),))
+      cat(dim(tempResult))
       write.table(t(tempResult), paste(outPath, outname, sep = ""), row.names = F, col.names = F, sep = "\n", quote = F, append = T)  
     }
     
@@ -121,9 +122,9 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outname) {
     # resultHeader <- c("SNP_Num\t", "P_value\t", "F_value")
     # write.table(towrite, paste(outPath, "/", outname, sep = ""), row.names = F, col.names = resultHeader, quote = F)
     # 
-    # for(i in 1:src_files_cnt){
-    #   file.remove(src_files[i])  
-    # }
+    for(i in 1:src_files_cnt){
+      file.remove(src_files[i])
+    }
     
     
     parallel::stopCluster(cl)
