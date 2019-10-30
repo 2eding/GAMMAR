@@ -22,4 +22,4 @@ K <- Kinship(X)<br><br>
 VC <- varComp(K, Y, X)<br><br>
 
 ### Step 5. Run GRAMMAR
-run <- run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 4, outPath = "./test/", name = "result.txt")
+run <- run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 4, outPath = "./test/", outName = "result.txt")
