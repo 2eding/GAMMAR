@@ -78,6 +78,8 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outName) {
     
     '%dopar%' <- foreach::"%dopar%"
     
+    dir.create(path=paste(outPath, "/tempFolderToResult", sep=""), mode = "777")
+    tempPath <- paste(outPath, "/tempFolderToResult", sep = "")
     
     foreach::foreach(i=1:Ng, .combine = 'rbind', .verbose = T) %dopar% {
       pval[i] <- esgamma(newY, X[, i], max_itr)
@@ -87,12 +89,13 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outName) {
       
       saveresult <- c(i,"\t",pv,"\t",fv,"\n")
 
-      cat(saveresult, file = paste(outPath, "tempResult_", i, sep = ""))
+      cat(saveresult, file = paste(tempPath, "/tempResult_", i, sep = ""))
       gc()
     }
     parallel::stopCluster(cl)
     
-    src_dir <- c(outPath)
+    src_dir <- paste(outPath, "/tempFolderToResult/", sep = "")
+    Sys.chmod(paste(src_dir, "tempResult_*", sep=""), mode = "777")
     src_files <- list.files(src_dir, pattern = "tempResult_*")
     src_files_cnt <- length(src_files)
     
@@ -106,10 +109,10 @@ run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outName) {
     tempread <- as.matrix(read.table(paste(outPath, outName, sep = "")))
     towrite <- tempread[order(tempread[,1]),]
     write.table(towrite, paste(outPath, "/", outName, sep = ""), row.names = F, col.names = resultHeader, quote = F)
-    
-    for(i in 1:src_files_cnt){
-      file.remove(src_files[i])
-    }
+     
+    unlink(paste(outPath, "/tempFolderToResult", sep = ""), recursive = T)
+
+    colnames(towrite) <- c("SNP_Num", "P-values", "F-values")
     
     return(towrite)
   }
