@@ -4,14 +4,14 @@
 \alias{varComp}
 \title{varComp}
 \usage{
-varComp(Y, K, num.parallel)
+varComp(K, Y, X)
 }
 \arguments{
-\item{Y}{is the phenotype matrix, individual x phenotypes}
-
 \item{K}{is obtained from the Kinship function}
 
-\item{num.parallel}{Number of parallel processes or a predefined socket cluster}
+\item{Y}{is the phenotype matrix, individual x phenotypes}
+
+\item{X}{is the SNP matrix, individual x SNPs}
 }
 \value{
 Variance components Vg: genetic factor Ve: environment factor
@@ -20,9 +20,9 @@ Variance components Vg: genetic factor Ve: environment factor
 varComp function will estimate variance components
 }
 \examples{
-   X <- as.matrix(data.table::fread(Genotypesdata))
-   Y <- as.matrix(data.table::fread(Phenotypesdata))
+   X <- as.matrix(read.table(SNPData))
+   Y <- as.matrix(read.table(GeneExpressionData))
    K <- Kinship(X)
    
-   VC <- varComp(Y, K, num.parallel)
+   VC <- varComp(K, Y, X)
 }
