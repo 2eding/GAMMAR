@@ -18,4 +18,5 @@ Imports:
     snow,
     parallel,
     doParallel,
-    foreach
+    foreach,
+    lmmlite
