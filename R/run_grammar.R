@@ -32,13 +32,13 @@
 #' @importFrom foreach foreach
 #' 
 #' @examples 
-#'    X <- as.matrix(data.table::fread(SNPData))
-#'    Y <- as.matrix(data.table::fread(GeneExpressionData))
+#'    X <- as.matrix(read.table("./testData/X_rightdim.txt"))
+#'    Y <- as.matrix(read.table("./testData/Y_rightdim.txt"))
 #'    
 #'    K <- Kinship(X)
 #'    VC <- varComp(K, Y, X)
 #'    
-#'    result <- run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 2, outPath = "./testdir/", outName = "result.txt")
+#'    result <- run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 2, outPath = "./dir/", outName = "result")
 #'    
 #' @export
 run_grammar<- function(K, Y, X, VC, max_itr, num.parallel, outPath, outName) {

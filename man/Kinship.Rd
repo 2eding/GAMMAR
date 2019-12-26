@@ -16,6 +16,6 @@ kinship coefficient
 Kinship function will estimate kinship coefficient
 }
 \examples{
-   X <- as.matrix(data.table::fread(SNPData))
+   X <- as.matrix(read.table("./testData/X_rightdim.txt"))
    K <- Kinship(X)
 }
