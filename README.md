@@ -5,8 +5,8 @@ Generalized Renown Analysis of Molecular variance for Mixed model Analysis R pac
 
 ### Step 1. Install and load the package
 library(devtools)<br>
-install_github("2eding/GRAMMAR")<br>
-library(GRAMMAR)<br><br>
+install_github("2eding/GAMMAR")<br>
+library(GAMMAR)<br><br>
 
 ### Step 2. Input data
 X <- as.matrix(data.table::fread("X_rightdim.txt"))<br>
