@@ -23,3 +23,6 @@ VC <- varComp(K, Y, X)<br><br>
 
 ### Step 5. Run GRAMMAR
 run <- run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 4, outPath = "./test/", outName = "result.txt")
+
+# Publication
+http://doi.org/10.5391/IJFIS.2020.20.3.1
