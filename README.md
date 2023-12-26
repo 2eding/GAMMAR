@@ -21,7 +21,7 @@ K <- Kinship(X)<br><br>
 ### Step 4. Calculate the variance components
 VC <- varComp(K, Y, X)<br><br>
 
-### Step 5. Run GRAMMAR
+### Step 5. Run GAMMAR
 run <- run_grammar(K, Y, X, VC, max_itr = 4, num.parallel = 4, outPath = "./test/", outName = "result.txt")
 
 # Publication
